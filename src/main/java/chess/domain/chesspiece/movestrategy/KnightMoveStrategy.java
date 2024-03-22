@@ -1,6 +1,5 @@
 package chess.domain.chesspiece.movestrategy;
 
-<<<<<<< HEAD
 import chess.domain.chessboard.ChessBoard;
 import chess.domain.chessboard.Square;
 import java.util.HashSet;
@@ -122,11 +121,5 @@ public class KnightMoveStrategy implements MoveStrategy {
         if (chessBoard.findChessPieceOnSquare(rightSquare).isEmpty()) {
             moveRange.add(rightSquare);
         }
-=======
-public class KnightMoveStrategy implements MoveStrategy {
-
-    @Override
-    public void move() {
->>>>>>> 47d89a9 (refactor: domain 패키지 추가)
     }
 }

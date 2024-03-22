@@ -1,6 +1,5 @@
 package chess.domain.chesspiece.movestrategy;
 
-<<<<<<< HEAD
 import chess.domain.chessboard.ChessBoard;
 import chess.domain.chessboard.Square;
 import java.util.ArrayList;
@@ -69,11 +68,5 @@ public class BishopMoveStrategy implements MoveStrategy {
             moveRange.add(rightBackwardDiagonalSquare);
             startSquare = rightBackwardDiagonalSquare;
         }
-=======
-public class BishopMoveStrategy implements MoveStrategy {
-    @Override
-    public void move() {
-
->>>>>>> 47d89a9 (refactor: domain 패키지 추가)
     }
 }

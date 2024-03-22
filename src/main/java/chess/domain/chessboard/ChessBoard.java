@@ -1,12 +1,9 @@
 package chess.domain.chessboard;
 
 import chess.domain.chesspiece.ChessPiece;
-<<<<<<< HEAD
 import chess.dto.ChessBoardDto;
 import chess.dto.ChessPieceDto;
 import java.util.LinkedHashMap;
-=======
->>>>>>> 47d89a9 (refactor: domain 패키지 추가)
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,7 +20,6 @@ public class ChessBoard {
     public ChessBoard() {
         this(BOARD_GENERATOR.generate());
     }
-<<<<<<< HEAD
 
     public Optional<ChessPiece> findChessPieceOnSquare(Square findSquare) {
         return board.keySet().stream()
@@ -102,6 +98,4 @@ public class ChessBoard {
         ChessPiece existChessPiece = chessPiece.get();
         return Optional.of(existChessPiece.createDto());
     }
-=======
->>>>>>> 47d89a9 (refactor: domain 패키지 추가)
 }

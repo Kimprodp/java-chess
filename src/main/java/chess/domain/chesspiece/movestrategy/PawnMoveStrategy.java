@@ -1,6 +1,5 @@
 package chess.domain.chesspiece.movestrategy;
 
-<<<<<<< HEAD
 import chess.domain.chessboard.ChessBoard;
 import chess.domain.chessboard.Square;
 import java.util.ArrayList;
@@ -63,11 +62,5 @@ public class PawnMoveStrategy implements MoveStrategy {
         if (chessBoard.findChessPieceOnSquare(rightDiagonalSquare).isPresent()) {
             moveRange.add(rightDiagonalSquare);
         }
-=======
-public class PawnMoveStrategy implements MoveStrategy {
-
-    @Override
-    public void move() {
->>>>>>> 47d89a9 (refactor: domain 패키지 추가)
     }
 }

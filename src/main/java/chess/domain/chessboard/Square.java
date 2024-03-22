@@ -12,7 +12,6 @@ public class Square {
         this.numbering = numbering;
     }
 
-<<<<<<< HEAD
     public boolean isForwardMost() {
         return numbering == Numbering.EIGHT;
     }
@@ -29,8 +28,6 @@ public class Square {
         return lettering == Lettering.H;
     }
 
-=======
->>>>>>> 47d89a9 (refactor: domain 패키지 추가)
     public Lettering getLettering() {
         return lettering;
     }
