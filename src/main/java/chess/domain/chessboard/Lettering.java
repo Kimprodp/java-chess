@@ -1,5 +1,6 @@
 package chess.domain.chessboard;
 
+<<<<<<< HEAD
 import java.util.Arrays;
 
 public enum Lettering {
@@ -40,5 +41,19 @@ public enum Lettering {
         }
         int findLetteringValue = lettering.value - 1;
         return findLettering(findLetteringValue);
+=======
+public enum Lettering {
+
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H;
+
+    Lettering() {
+>>>>>>> 47d89a9 (refactor: domain 패키지 추가)
     }
 }

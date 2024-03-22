@@ -1,9 +1,12 @@
 package chess.domain.chessboard;
 
+<<<<<<< HEAD
 import static chess.domain.chessboard.Lettering.findLettering;
 
 import java.util.Arrays;
 
+=======
+>>>>>>> 47d89a9 (refactor: domain 패키지 추가)
 public enum Numbering {
 
     ONE(1),
@@ -15,6 +18,7 @@ public enum Numbering {
     SEVEN(7),
     EIGHT(8);
 
+<<<<<<< HEAD
     private final int value;
 
     Numbering(int value) {
@@ -42,5 +46,15 @@ public enum Numbering {
         }
         int findNumberingValue = numbering.value - 1;
         return findNumbering(findNumberingValue);
+=======
+    private final int number;
+
+    Numbering(int number) {
+        this.number = number;
+    }
+
+    public int getNumber() {
+        return number;
+>>>>>>> 47d89a9 (refactor: domain 패키지 추가)
     }
 }
