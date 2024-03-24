@@ -2,6 +2,7 @@ package chess.domain.position;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -11,39 +12,29 @@ import org.junit.jupiter.api.Test;
 class LetteringTest {
 
     @Test
-    void 첫번째_레터링일_경우_True() {
+    void 첫번째_레터링인지_확인() {
         //given, when
-        boolean isFirstLettering = Lettering.isFirstLettering(Lettering.A);
+        boolean expectedTrue = Lettering.isFirstLettering(Lettering.A);
+        boolean expectedFalse = Lettering.isFirstLettering(Lettering.B);
 
         //then
-        assertThat(isFirstLettering).isTrue();
+        assertAll(
+                () -> assertThat(expectedTrue).isTrue(),
+                () -> assertThat(expectedFalse).isFalse()
+        );
     }
 
     @Test
-    void 첫번째_레터링이_아닌_경우_False() {
+    void 마지막_레터링인지_확인() {
         //given, when
-        boolean isFirstLettering = Lettering.isFirstLettering(Lettering.B);
+        boolean expectedTrue = Lettering.isLastLettering(Lettering.H);
+        boolean expectedFalse = Lettering.isLastLettering(Lettering.G);
 
         //then
-        assertThat(isFirstLettering).isFalse();
-    }
-
-    @Test
-    void 마지막_레터링일_경우_True() {
-        //given, when
-        boolean isLastLettering = Lettering.isLastLettering(Lettering.H);
-
-        //then
-        assertThat(isLastLettering).isTrue();
-    }
-
-    @Test
-    void 마지막_레터링이_아닌_경우_False() {
-        //given, when
-        boolean isLastLettering = Lettering.isLastLettering(Lettering.G);
-
-        //then
-        assertThat(isLastLettering).isFalse();
+        assertAll(
+                () -> assertThat(expectedTrue).isTrue(),
+                () -> assertThat(expectedFalse).isFalse()
+        );
     }
 
     @Test

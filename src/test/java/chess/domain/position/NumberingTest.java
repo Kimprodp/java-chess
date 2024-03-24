@@ -2,6 +2,7 @@ package chess.domain.position;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -11,39 +12,29 @@ import org.junit.jupiter.api.Test;
 class NumberingTest {
 
     @Test
-    void 첫번째_넘버링일_경우_True() {
+    void 첫번째_넘버링인지_확인() {
         //given, when
-        boolean isFirstNumbering = Numbering.isFirstNumbering(Numbering.ONE);
+        boolean expectedTrue = Numbering.isFirstNumbering(Numbering.ONE);
+        boolean expectedFalse = Numbering.isFirstNumbering(Numbering.TWO);
 
         //then
-        assertThat(isFirstNumbering).isTrue();
+        assertAll(
+                () -> assertThat(expectedTrue).isTrue(),
+                () -> assertThat(expectedFalse).isFalse()
+        );
     }
 
     @Test
-    void 첫번째_넘버링이_아닌_경우_False() {
+    void 마지막_넘버링인지_확인() {
         //given, when
-        boolean isFirstNumbering = Numbering.isFirstNumbering(Numbering.TWO);
+        boolean expectedTrue = Numbering.isLastNumbering(Numbering.EIGHT);
+        boolean expectedFalse = Numbering.isLastNumbering(Numbering.SEVEN);
 
         //then
-        assertThat(isFirstNumbering).isFalse();
-    }
-
-    @Test
-    void 마지막_넘버링일_경우_True() {
-        //given, when
-        boolean isLastNumbering = Numbering.isLastNumbering(Numbering.EIGHT);
-
-        //then
-        assertThat(isLastNumbering).isTrue();
-    }
-
-    @Test
-    void 마지막_넘버링이_아닌_경우_False() {
-        //given, when
-        boolean isLastNumbering = Numbering.isLastNumbering(Numbering.SEVEN);
-
-        //then
-        assertThat(isLastNumbering).isFalse();
+        assertAll(
+                () -> assertThat(expectedTrue).isTrue(),
+                () -> assertThat(expectedFalse).isFalse()
+        );
     }
 
     @Test
