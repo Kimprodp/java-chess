@@ -72,7 +72,7 @@ class NumberingTest {
     }
 
     @Test
-    void 이전_순서의_넘버링을_반환할떄_마지막_넘버링일경우_예외발생() {
+    void 이전_순서의_넘버링을_반환할떄_첫번째_넘버링일경우_예외발생() {
         //given, when, then
         assertThatThrownBy(() -> Numbering.findPreviousNumbering(Numbering.ONE))
                 .isInstanceOf(IllegalArgumentException.class);
