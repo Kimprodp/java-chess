@@ -19,12 +19,12 @@ public enum Numbering {
     Numbering() {
     }
 
-    public static boolean isLastNumbering(Numbering numbering) {
-        return numbering.ordinal() == LAST_NUMBERING_ORDINAL;
-    }
-
     public static boolean isFirstNumbering(Numbering numbering) {
         return numbering.ordinal() == FIRST_NUMBERING_ORDINAL;
+    }
+
+    public static boolean isLastNumbering(Numbering numbering) {
+        return numbering.ordinal() == LAST_NUMBERING_ORDINAL;
     }
 
     public static Numbering findNextNumbering(Numbering numbering) {
