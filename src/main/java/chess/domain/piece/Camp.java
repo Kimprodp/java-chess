@@ -1,4 +1,4 @@
-package chess.domain.chesspiece;
+package chess.domain.piece;
 
 public enum Camp {
 
