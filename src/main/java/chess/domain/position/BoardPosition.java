@@ -17,24 +17,44 @@ public class BoardPosition {
                 .toList();
     }
 
-    public static boolean isTopPosition(Position position) {
+    public static boolean canFindUpPosition(Position position) {
         Numbering numbering = position.getNumbering();
-        return Numbering.isLastNumbering(numbering);
+        return Numbering.canFindNextNumbering(numbering);
     }
 
-    public static boolean isBottomPosition(Position position) {
+    public static boolean canFindUpPosition(Position position, int count) {
         Numbering numbering = position.getNumbering();
-        return Numbering.isFirstNumbering(numbering);
+        return Numbering.canFindNextNumbering(numbering, count);
     }
 
-    public static boolean isLeftMostPosition(Position position) {
-        Lettering lettering = position.getLettering();
-        return Lettering.isFirstLettering(lettering);
+    public static boolean canFindDownPosition(Position position) {
+        Numbering numbering = position.getNumbering();
+        return Numbering.canFindPreviousNumbering(numbering);
     }
 
-    public static boolean isRightMostPosition(Position position) {
+    public static boolean canFindDownPosition(Position position, int count) {
+        Numbering numbering = position.getNumbering();
+        return Numbering.canFindPreviousNumbering(numbering, count);
+    }
+
+    public static boolean canFindLeftPosition(Position position) {
         Lettering lettering = position.getLettering();
-        return Lettering.isLastLettering(lettering);
+        return Lettering.canFindPreviousLettering(lettering);
+    }
+
+    public static boolean canFindLeftPosition(Position position, int count) {
+        Lettering lettering = position.getLettering();
+        return Lettering.canFindPreviousLettering(lettering, count);
+    }
+
+    public static boolean canFindRightPosition(Position position) {
+        Lettering lettering = position.getLettering();
+        return Lettering.canFindNextLettering(lettering);
+    }
+
+    public static boolean canFindRightPosition(Position position, int count) {
+        Lettering lettering = position.getLettering();
+        return Lettering.canFindNextLettering(lettering, count);
     }
 
     public static Position findPosition(Lettering lettering, Numbering numbering) {
@@ -53,9 +73,21 @@ public class BoardPosition {
         return findPosition(position.getLettering(), nextNumbering);
     }
 
+    public static Position findUpPosition(Position position, int count) {
+        Numbering numbering = position.getNumbering();
+        Numbering nextNumbering = Numbering.findNextNumbering(numbering, count);
+        return findPosition(position.getLettering(), nextNumbering);
+    }
+
     public static Position findDownPosition(Position position) {
         Numbering numbering = position.getNumbering();
         Numbering previousLettering = Numbering.findPreviousNumbering(numbering);
+        return findPosition(position.getLettering(), previousLettering);
+    }
+
+    public static Position findDownPosition(Position position, int count) {
+        Numbering numbering = position.getNumbering();
+        Numbering previousLettering = Numbering.findPreviousNumbering(numbering, count);
         return findPosition(position.getLettering(), previousLettering);
     }
 
@@ -65,9 +97,21 @@ public class BoardPosition {
         return findPosition(previousLettering, position.getNumbering());
     }
 
+    public static Position findLeftPosition(Position position, int count) {
+        Lettering lettering = position.getLettering();
+        Lettering previousLettering = Lettering.findPreviousLettering(lettering, count);
+        return findPosition(previousLettering, position.getNumbering());
+    }
+
     public static Position findRightPosition(Position position) {
         Lettering lettering = position.getLettering();
         Lettering previousLettering = Lettering.findNextLettering(lettering);
+        return findPosition(previousLettering, position.getNumbering());
+    }
+
+    public static Position findRightPosition(Position position, int count) {
+        Lettering lettering = position.getLettering();
+        Lettering previousLettering = Lettering.findNextLettering(lettering, count);
         return findPosition(previousLettering, position.getNumbering());
     }
 }
