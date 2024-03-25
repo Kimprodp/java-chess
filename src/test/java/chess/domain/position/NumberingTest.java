@@ -12,27 +12,31 @@ import org.junit.jupiter.api.Test;
 class NumberingTest {
 
     @Test
-    void 첫번째_넘버링인지_확인() {
+    void 다음_순서의_넘버링을_조회_가능한지_확인() {
         //given, when
-        boolean expectedTrue = Numbering.isFirstNumbering(Numbering.ONE);
-        boolean expectedFalse = Numbering.isFirstNumbering(Numbering.TWO);
+        boolean expectedTrue1 = Numbering.canFindNextNumbering(Numbering.SEVEN);
+        boolean expectedTrue2 = Numbering.canFindNextNumbering(Numbering.SIX, 2);
+        boolean expectedFalse = Numbering.canFindNextNumbering(Numbering.EIGHT);
 
         //then
         assertAll(
-                () -> assertThat(expectedTrue).isTrue(),
+                () -> assertThat(expectedTrue1).isTrue(),
+                () -> assertThat(expectedTrue2).isTrue(),
                 () -> assertThat(expectedFalse).isFalse()
         );
     }
 
     @Test
-    void 마지막_넘버링인지_확인() {
+    void 이전_순서의_넘버링을_조회_가능한지_확인() {
         //given, when
-        boolean expectedTrue = Numbering.isLastNumbering(Numbering.EIGHT);
-        boolean expectedFalse = Numbering.isLastNumbering(Numbering.SEVEN);
+        boolean expectedTrue1 = Numbering.canFindPreviousNumbering(Numbering.TWO);
+        boolean expectedTrue2 = Numbering.canFindPreviousNumbering(Numbering.THREE, 2);
+        boolean expectedFalse = Numbering.canFindPreviousNumbering(Numbering.ONE);
 
         //then
         assertAll(
-                () -> assertThat(expectedTrue).isTrue(),
+                () -> assertThat(expectedTrue1).isTrue(),
+                () -> assertThat(expectedTrue2).isTrue(),
                 () -> assertThat(expectedFalse).isFalse()
         );
     }
@@ -40,32 +44,49 @@ class NumberingTest {
     @Test
     void 다음_순서의_넘버링을_반환() {
         //given, when
-        Numbering nextNumbering = Numbering.findNextNumbering(Numbering.ONE);
+        Numbering nextNumbering1 = Numbering.findNextNumbering(Numbering.ONE);
+        Numbering nextNumbering2 = Numbering.findNextNumbering(Numbering.ONE, 2);
 
         //then
-        assertThat(nextNumbering).isEqualTo(Numbering.TWO);
+        assertAll(
+                () -> assertThat(nextNumbering1).isEqualTo(Numbering.TWO),
+                () -> assertThat(nextNumbering2).isEqualTo(Numbering.THREE)
+        );
     }
 
     @Test
-    void 다음_순서의_넘버링을_반환할떄_마지막_넘버링일경우_예외발생() {
+    void 다음_순서의_넘버링을_반환할떄_마지막_넘버링을_초과하는_경우_예외발생() {
         //given, when, then
-        assertThatThrownBy(() -> Numbering.findNextNumbering(Numbering.EIGHT))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertAll(
+                () -> assertThatThrownBy(() -> Numbering.findNextNumbering(Numbering.EIGHT))
+                        .isInstanceOf(IllegalArgumentException.class),
+                () -> assertThatThrownBy(() -> Numbering.findNextNumbering(Numbering.SEVEN, 2))
+                        .isInstanceOf(IllegalArgumentException.class)
+
+        );
     }
 
     @Test
     void 이전_순서의_넘버링을_반환() {
         //given, when
-        Numbering previousNumbering = Numbering.findPreviousNumbering(Numbering.TWO);
+        Numbering previousNumbering1 = Numbering.findPreviousNumbering(Numbering.TWO);
+        Numbering previousNumbering2 = Numbering.findPreviousNumbering(Numbering.THREE, 2);
 
         //then
-        assertThat(previousNumbering).isEqualTo(Numbering.ONE);
+        assertAll(
+                () -> assertThat(previousNumbering1).isEqualTo(Numbering.ONE),
+                () -> assertThat(previousNumbering2).isEqualTo(Numbering.ONE)
+        );
     }
 
     @Test
-    void 이전_순서의_넘버링을_반환할떄_첫번째_넘버링일경우_예외발생() {
+    void 이전_순서의_넘버링을_반환할떄_첫번째_넘버링보다_작을_경우_예외발생() {
         //given, when, then
-        assertThatThrownBy(() -> Numbering.findPreviousNumbering(Numbering.ONE))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertAll(
+                () -> assertThatThrownBy(() -> Numbering.findPreviousNumbering(Numbering.ONE))
+                        .isInstanceOf(IllegalArgumentException.class),
+                () -> assertThatThrownBy(() -> Numbering.findPreviousNumbering(Numbering.TWO, 2))
+                        .isInstanceOf(IllegalArgumentException.class)
+        );
     }
 }
