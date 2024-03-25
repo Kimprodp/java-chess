@@ -13,15 +13,18 @@ import java.util.Map;
 
 public class PiecePositionInitializer {
 
-    private static final PiecePositionInitializer INSTANCE = new PiecePositionInitializer();
     private static final List<Numbering> PIECE_STARTING_NUMBERING = List.of(
             Numbering.ONE,
             Numbering.TWO,
             Numbering.SEVEN,
             Numbering.EIGHT)
             ;
+    private static final PiecePositionInitializer INSTANCE = new PiecePositionInitializer();
 
     private final List<Position> startingPosition = fetchStartingPosition();
+
+    private PiecePositionInitializer() {
+    }
 
     public static PiecePositionInitializer getInstance() {
         return INSTANCE;

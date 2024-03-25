@@ -18,19 +18,19 @@ class PiecePositionInitializerTest {
     @Test
     void 체스말_32개의_초기_위치가_설정된_체스_상태를_생성() {
         //given, when
-        Map<Position, Piece> initialState = piecePositionInitializer.generateInitializedPiecePosition();
+        Map<Position, Piece> piecePosition = piecePositionInitializer.generateInitializedPiecePosition();
 
         //then
-        assertThat(initialState).hasSize(32);
+        assertThat(piecePosition).hasSize(32);
     }
 
     @Test
     void 동일한_위치에_체스말이_위치할_수_없음() {
         //given, when
-        Map<Position, Piece> initialState = piecePositionInitializer.generateInitializedPiecePosition();
+        Map<Position, Piece> piecePosition = piecePositionInitializer.generateInitializedPiecePosition();
 
-        int initialStateSize = initialState.size();
-        Set<Position> notDuplicatedState = initialState.keySet();
+        int initialStateSize = piecePosition.size();
+        Set<Position> notDuplicatedState = piecePosition.keySet();
 
         //then
         assertThat(notDuplicatedState).hasSize(initialStateSize);
@@ -39,10 +39,10 @@ class PiecePositionInitializerTest {
     @Test
     void 위치마다_놓인_체스말에는_빈_값이_있을_수_없음() {
         //given, when
-        Map<Position, Piece> initialState = piecePositionInitializer.generateInitializedPiecePosition();
+        Map<Position, Piece> piecePosition = piecePositionInitializer.generateInitializedPiecePosition();
 
-        int numberOfNullPiece = (int) initialState.keySet().stream()
-                .filter(position -> initialState.get(position) != null)
+        int numberOfNullPiece = (int) piecePosition.keySet().stream()
+                .filter(position -> piecePosition.get(position) == null)
                 .count();
 
         //then
