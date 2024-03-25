@@ -19,16 +19,24 @@ public enum Lettering {
     Lettering() {
     }
 
-    public static boolean isFirstLettering(Lettering lettering) {
-        return lettering.ordinal() == FIRST_LETTERING_ORDINAL;
+    public static boolean canFindNextLettering(Lettering lettering) {
+        return lettering.ordinal() < LAST_LETTERING_ORDINAL;
     }
 
-    public static boolean isLastLettering(Lettering lettering) {
-        return lettering.ordinal() == LAST_LETTERING_ORDINAL;
+    public static boolean canFindNextLettering(Lettering lettering, int count) {
+        return lettering.ordinal() + count <= LAST_LETTERING_ORDINAL;
+    }
+
+    public static boolean canFindPreviousLettering(Lettering lettering) {
+        return lettering.ordinal() > FIRST_LETTERING_ORDINAL;
+    }
+
+    public static boolean canFindPreviousLettering(Lettering lettering, int count) {
+        return lettering.ordinal() - count >= FIRST_LETTERING_ORDINAL;
     }
 
     public static Lettering findNextLettering(Lettering lettering) {
-        if (lettering.ordinal() == LAST_LETTERING_ORDINAL) {
+        if (!canFindNextLettering(lettering)) {
             String errorMessage = String.format("[ERROR] %s는 마지막 Lettering 입니다.", lettering);
             throw new IllegalArgumentException(errorMessage);
         }
@@ -37,13 +45,33 @@ public enum Lettering {
         return findLettering(targetOrdinal);
     }
 
+    public static Lettering findNextLettering(Lettering lettering, int count) {
+        if (!canFindNextLettering(lettering, count)) {
+            String errorMessage = String.format("[ERROR] Lettering 범위를 초과합니다. : %s, %d", lettering, count);
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        int targetOrdinal = lettering.ordinal() + count;
+        return findLettering(targetOrdinal);
+    }
+
     public static Lettering findPreviousLettering(Lettering lettering) {
-        if (lettering.ordinal() == FIRST_LETTERING_ORDINAL) {
+        if (!canFindPreviousLettering(lettering)) {
             String errorMessage = String.format("[ERROR] %s는 처음 Lettering 입니다.", lettering);
             throw new IllegalArgumentException(errorMessage);
         }
 
         int targetOrdinal = lettering.ordinal() - 1;
+        return findLettering(targetOrdinal);
+    }
+
+    public static Lettering findPreviousLettering(Lettering lettering, int count) {
+        if (!canFindPreviousLettering(lettering, count)) {
+            String errorMessage = String.format("[ERROR] Lettering 범위 보다 작습니다. : %s, %d", lettering, count);
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        int targetOrdinal = lettering.ordinal() - count;
         return findLettering(targetOrdinal);
     }
 
