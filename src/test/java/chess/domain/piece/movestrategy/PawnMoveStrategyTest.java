@@ -49,8 +49,8 @@ class PawnMoveStrategyTest {
         List<Position> blackPawnRange = List.of(E6, E5);
 
         assertAll(
-                () -> assertThat(whitePawnRange).containsExactlyInAnyOrderElementsOf(whitePawnMoveRange),
-                () -> assertThat(blackPawnRange).containsExactlyInAnyOrderElementsOf(blackPawnMoveRange)
+                () -> assertThat(whitePawnMoveRange).containsAll(whitePawnRange),
+                () -> assertThat(blackPawnMoveRange).containsAll(blackPawnRange)
         );
     }
 
@@ -70,10 +70,8 @@ class PawnMoveStrategyTest {
         Set<Position> blackPawnMoveRange = pawnMoveStrategy.move(E7, piecePosition);
 
         //then
-        List<Position> whitePawnRange = List.of(D3);
-
         assertAll(
-                () -> assertThat(whitePawnRange).containsExactlyElementsOf(whitePawnMoveRange),
+                () -> assertThat(whitePawnMoveRange).containsExactly(D3),
                 () -> assertThat(blackPawnMoveRange).isEmpty()
         );
     }
@@ -94,12 +92,9 @@ class PawnMoveStrategyTest {
         Set<Position> blackPawnMoveRange = pawnMoveStrategy.move(E5, piecePosition);
 
         //then
-        List<Position> whitePawnRange = List.of(D6);
-        List<Position> blackPawnRange = List.of(E4);
-
         assertAll(
-                () -> assertThat(whitePawnRange).containsExactlyElementsOf(whitePawnMoveRange),
-                () -> assertThat(blackPawnRange).containsExactlyElementsOf(blackPawnMoveRange)
+                () -> assertThat(whitePawnMoveRange).containsExactly(D6),
+                () -> assertThat(blackPawnMoveRange).containsExactly(E4)
         );
     }
 
