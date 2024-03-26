@@ -1,7 +1,7 @@
 package chess.domain;
 
-import chess.domain.position.Position;
 import chess.domain.piece.Piece;
+import chess.domain.position.Position;
 import java.util.Map;
 
 public class PiecePosition {
@@ -18,6 +18,19 @@ public class PiecePosition {
         }
 
         return piecePosition.get(findPosition);
+    }
+
+    public void movePiece(Piece piece, Position targetPosition) {
+        Position positionByPiece = findPositionByPiece(piece);
+        piecePosition.remove(positionByPiece);
+        piecePosition.put(targetPosition, piece);
+    }
+
+    private Position findPositionByPiece(Piece piece) {
+        return piecePosition.keySet().stream()
+                .filter(position -> piecePosition.get(position) == piece)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 체스말이 체스판 위에 있지 않습니다. : " + piece));
     }
 
     public boolean hasPieceAt(Position position) {
