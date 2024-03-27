@@ -24,11 +24,11 @@ class PieceGeneratorTest {
         Piece piece = pieceGenerator.generate(position);
 
         //then
-        ChessPieceType expectedKnight = piece.getChessPieceType();
+        PieceType expectedKnight = piece.getChessPieceType();
         Camp expectedWhite = piece.getCamp();
 
         assertAll(
-                () -> assertThat(expectedKnight).isEqualTo(ChessPieceType.KNIGHT),
+                () -> assertThat(expectedKnight).isEqualTo(PieceType.KNIGHT),
                 () -> assertThat(expectedWhite).isEqualTo(Camp.WHITE)
         );
     }

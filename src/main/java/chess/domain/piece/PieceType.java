@@ -12,7 +12,7 @@ import chess.domain.position.Position;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public enum ChessPieceType {
+public enum PieceType {
 
     KING(KingMoveStrategy::getInstance),
     QUEEN(QueenMoveStrategy::getInstance),
@@ -23,7 +23,7 @@ public enum ChessPieceType {
 
     private final Supplier<MoveStrategy> moveStrategySupplier;
 
-    ChessPieceType(Supplier<MoveStrategy> moveStrategySupplier) {
+    PieceType(Supplier<MoveStrategy> moveStrategySupplier) {
         this.moveStrategySupplier = moveStrategySupplier;
     }
 

@@ -23,13 +23,13 @@ class PieceTypeDeterminerTest {
         Position position2 = new Position(Lettering.E, Numbering.EIGHT);
 
         //when
-        ChessPieceType pieceType1 = pieceTypeDeterminer.determine(position1);
-        ChessPieceType pieceType2 = pieceTypeDeterminer.determine(position2);
+        PieceType pieceType1 = pieceTypeDeterminer.determine(position1);
+        PieceType pieceType2 = pieceTypeDeterminer.determine(position2);
 
         //then
         assertAll(
-                () -> assertThat(pieceType1).isEqualTo(ChessPieceType.KING),
-                () -> assertThat(pieceType2).isEqualTo(ChessPieceType.KING)
+                () -> assertThat(pieceType1).isEqualTo(PieceType.KING),
+                () -> assertThat(pieceType2).isEqualTo(PieceType.KING)
         );
     }
 
@@ -40,13 +40,13 @@ class PieceTypeDeterminerTest {
         Position position2 = new Position(Lettering.D, Numbering.EIGHT);
 
         //when
-        ChessPieceType pieceType1 = pieceTypeDeterminer.determine(position1);
-        ChessPieceType pieceType2 = pieceTypeDeterminer.determine(position2);
+        PieceType pieceType1 = pieceTypeDeterminer.determine(position1);
+        PieceType pieceType2 = pieceTypeDeterminer.determine(position2);
 
         //then
         assertAll(
-                () -> assertThat(pieceType1).isEqualTo(ChessPieceType.QUEEN),
-                () -> assertThat(pieceType2).isEqualTo(ChessPieceType.QUEEN)
+                () -> assertThat(pieceType1).isEqualTo(PieceType.QUEEN),
+                () -> assertThat(pieceType2).isEqualTo(PieceType.QUEEN)
         );
     }
 
@@ -59,17 +59,17 @@ class PieceTypeDeterminerTest {
         Position position4 = new Position(Lettering.F, Numbering.EIGHT);
 
         //when
-        ChessPieceType pieceType1 = pieceTypeDeterminer.determine(position1);
-        ChessPieceType pieceType2 = pieceTypeDeterminer.determine(position2);
-        ChessPieceType pieceType3 = pieceTypeDeterminer.determine(position3);
-        ChessPieceType pieceType4 = pieceTypeDeterminer.determine(position4);
+        PieceType pieceType1 = pieceTypeDeterminer.determine(position1);
+        PieceType pieceType2 = pieceTypeDeterminer.determine(position2);
+        PieceType pieceType3 = pieceTypeDeterminer.determine(position3);
+        PieceType pieceType4 = pieceTypeDeterminer.determine(position4);
 
         //then
         assertAll(
-                () -> assertThat(pieceType1).isEqualTo(ChessPieceType.BISHOP),
-                () -> assertThat(pieceType2).isEqualTo(ChessPieceType.BISHOP),
-                () -> assertThat(pieceType3).isEqualTo(ChessPieceType.BISHOP),
-                () -> assertThat(pieceType4).isEqualTo(ChessPieceType.BISHOP)
+                () -> assertThat(pieceType1).isEqualTo(PieceType.BISHOP),
+                () -> assertThat(pieceType2).isEqualTo(PieceType.BISHOP),
+                () -> assertThat(pieceType3).isEqualTo(PieceType.BISHOP),
+                () -> assertThat(pieceType4).isEqualTo(PieceType.BISHOP)
         );
     }
 
@@ -82,17 +82,17 @@ class PieceTypeDeterminerTest {
         Position position4 = new Position(Lettering.G, Numbering.EIGHT);
 
         //when
-        ChessPieceType pieceType1 = pieceTypeDeterminer.determine(position1);
-        ChessPieceType pieceType2 = pieceTypeDeterminer.determine(position2);
-        ChessPieceType pieceType3 = pieceTypeDeterminer.determine(position3);
-        ChessPieceType pieceType4 = pieceTypeDeterminer.determine(position4);
+        PieceType pieceType1 = pieceTypeDeterminer.determine(position1);
+        PieceType pieceType2 = pieceTypeDeterminer.determine(position2);
+        PieceType pieceType3 = pieceTypeDeterminer.determine(position3);
+        PieceType pieceType4 = pieceTypeDeterminer.determine(position4);
 
         //then
         assertAll(
-                () -> assertThat(pieceType1).isEqualTo(ChessPieceType.KNIGHT),
-                () -> assertThat(pieceType2).isEqualTo(ChessPieceType.KNIGHT),
-                () -> assertThat(pieceType3).isEqualTo(ChessPieceType.KNIGHT),
-                () -> assertThat(pieceType4).isEqualTo(ChessPieceType.KNIGHT)
+                () -> assertThat(pieceType1).isEqualTo(PieceType.KNIGHT),
+                () -> assertThat(pieceType2).isEqualTo(PieceType.KNIGHT),
+                () -> assertThat(pieceType3).isEqualTo(PieceType.KNIGHT),
+                () -> assertThat(pieceType4).isEqualTo(PieceType.KNIGHT)
         );
     }
 
@@ -105,17 +105,17 @@ class PieceTypeDeterminerTest {
         Position position4 = new Position(Lettering.H, Numbering.EIGHT);
 
         //when
-        ChessPieceType pieceType1 = pieceTypeDeterminer.determine(position1);
-        ChessPieceType pieceType2 = pieceTypeDeterminer.determine(position2);
-        ChessPieceType pieceType3 = pieceTypeDeterminer.determine(position3);
-        ChessPieceType pieceType4 = pieceTypeDeterminer.determine(position4);
+        PieceType pieceType1 = pieceTypeDeterminer.determine(position1);
+        PieceType pieceType2 = pieceTypeDeterminer.determine(position2);
+        PieceType pieceType3 = pieceTypeDeterminer.determine(position3);
+        PieceType pieceType4 = pieceTypeDeterminer.determine(position4);
 
         //then
         assertAll(
-                () -> assertThat(pieceType1).isEqualTo(ChessPieceType.ROOK),
-                () -> assertThat(pieceType2).isEqualTo(ChessPieceType.ROOK),
-                () -> assertThat(pieceType3).isEqualTo(ChessPieceType.ROOK),
-                () -> assertThat(pieceType4).isEqualTo(ChessPieceType.ROOK)
+                () -> assertThat(pieceType1).isEqualTo(PieceType.ROOK),
+                () -> assertThat(pieceType2).isEqualTo(PieceType.ROOK),
+                () -> assertThat(pieceType3).isEqualTo(PieceType.ROOK),
+                () -> assertThat(pieceType4).isEqualTo(PieceType.ROOK)
         );
     }
 
@@ -126,13 +126,13 @@ class PieceTypeDeterminerTest {
         Position position2 = new Position(Lettering.H, Numbering.SEVEN);
 
         //when
-        ChessPieceType pieceType1 = pieceTypeDeterminer.determine(position1);
-        ChessPieceType pieceType2 = pieceTypeDeterminer.determine(position2);
+        PieceType pieceType1 = pieceTypeDeterminer.determine(position1);
+        PieceType pieceType2 = pieceTypeDeterminer.determine(position2);
 
         //then
         assertAll(
-                () -> assertThat(pieceType1).isEqualTo(ChessPieceType.PAWN),
-                () -> assertThat(pieceType2).isEqualTo(ChessPieceType.PAWN)
+                () -> assertThat(pieceType1).isEqualTo(PieceType.PAWN),
+                () -> assertThat(pieceType2).isEqualTo(PieceType.PAWN)
         );
     }
 

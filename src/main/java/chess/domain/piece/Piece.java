@@ -7,17 +7,17 @@ import java.util.Set;
 
 public class Piece {
 
-    private final ChessPieceType chessPieceType;
+    private final PieceType pieceType;
     private final Camp camp;
 
-    public Piece(ChessPieceType chessPieceType, Camp camp) {
-        this.chessPieceType = chessPieceType;
+    public Piece(PieceType pieceType, Camp camp) {
+        this.pieceType = pieceType;
         this.camp = camp;
     }
 
     public void move(Position startPosition, Position targetPosition, PiecePosition piecePosition) {
         validatePieceOnStartPosition(startPosition, piecePosition);
-        Set<Position> movablePosition = chessPieceType.executeMoveStrategy(startPosition, piecePosition);
+        Set<Position> movablePosition = pieceType.executeMoveStrategy(startPosition, piecePosition);
         if (movablePosition.contains(targetPosition)) {
             piecePosition.movePiece(this, targetPosition);
         }
@@ -34,8 +34,8 @@ public class Piece {
 
     }
 
-    public ChessPieceType getChessPieceType() {
-        return chessPieceType;
+    public PieceType getChessPieceType() {
+        return pieceType;
     }
 
     public Camp getCamp() {
@@ -45,7 +45,7 @@ public class Piece {
     @Override
     public String toString() {
         return "Piece{" +
-                "chessPieceType=" + chessPieceType +
+                "chessPieceType=" + pieceType +
                 ", camp=" + camp +
                 '}';
     }

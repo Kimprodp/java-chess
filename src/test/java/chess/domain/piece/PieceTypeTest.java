@@ -16,7 +16,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class ChessPieceTypeTest {
+class PieceTypeTest {
 
     @Test
     void 체스말의_타입에_맞는_행마법을_적용한_이동_가능한_범위를_반환() {
@@ -26,7 +26,7 @@ class ChessPieceTypeTest {
         PiecePosition piecePosition = new PiecePosition(testPosition);
 
         //when
-        Set<Position> pawnMovableRange = ChessPieceType.PAWN.executeMoveStrategy(D2, piecePosition);
+        Set<Position> pawnMovableRange = PieceType.PAWN.executeMoveStrategy(D2, piecePosition);
 
         //then
         assertThat(pawnMovableRange).containsExactly(D3, D4);

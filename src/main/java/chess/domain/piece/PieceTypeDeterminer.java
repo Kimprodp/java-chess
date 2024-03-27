@@ -12,7 +12,7 @@ public class PieceTypeDeterminer {
     private static final List<Numbering> OTHER_PIECE_LINE_NUMBERING = List.of(Numbering.ONE, Numbering.EIGHT);
 
 
-    private ChessPieceType determinedType;
+    private PieceType determinedType;
 
     private PieceTypeDeterminer() {
     }
@@ -21,7 +21,7 @@ public class PieceTypeDeterminer {
         return INSTANCE;
     }
 
-    public ChessPieceType determine(Position position) {
+    public PieceType determine(Position position) {
         determineType(position);
         return determinedType;
     }
@@ -40,41 +40,41 @@ public class PieceTypeDeterminer {
 
     private void updateKing(Numbering numbering, Lettering lettering) {
         if (OTHER_PIECE_LINE_NUMBERING.contains(numbering) && lettering == Lettering.E) {
-            determinedType = ChessPieceType.KING;
+            determinedType = PieceType.KING;
         }
     }
 
     private void updateQueen(Numbering numbering, Lettering lettering) {
         if (OTHER_PIECE_LINE_NUMBERING.contains(numbering) && lettering == Lettering.D) {
-            determinedType = ChessPieceType.QUEEN;
+            determinedType = PieceType.QUEEN;
         }
     }
 
     private void updateBishop(Numbering numbering, Lettering lettering) {
         List<Lettering> bishopLettering = List.of(Lettering.C, Lettering.F);
         if (OTHER_PIECE_LINE_NUMBERING.contains(numbering) && bishopLettering.contains(lettering)) {
-            determinedType = ChessPieceType.BISHOP;
+            determinedType = PieceType.BISHOP;
         }
     }
 
     private void updateKnight(Numbering numbering, Lettering lettering) {
         List<Lettering> knightLettering = List.of(Lettering.B, Lettering.G);
         if (OTHER_PIECE_LINE_NUMBERING.contains(numbering) && knightLettering.contains(lettering)) {
-            determinedType = ChessPieceType.KNIGHT;
+            determinedType = PieceType.KNIGHT;
         }
     }
 
     private void updateRook(Numbering numbering, Lettering lettering) {
         List<Lettering> rookLettering = List.of(Lettering.A, Lettering.H);
         if (OTHER_PIECE_LINE_NUMBERING.contains(numbering) && rookLettering.contains(lettering)) {
-            determinedType = ChessPieceType.ROOK;
+            determinedType = PieceType.ROOK;
         }
     }
 
     private void updatePawn(Numbering numbering, Lettering lettering) {
         List<Lettering> pawnLettering = List.of(Lettering.values());
         if (PAWN_LINE_NUMBERING.contains(numbering) && pawnLettering.contains(lettering)) {
-            determinedType = ChessPieceType.PAWN;
+            determinedType = PieceType.PAWN;
         }
     }
 

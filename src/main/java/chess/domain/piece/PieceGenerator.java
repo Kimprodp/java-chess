@@ -17,7 +17,7 @@ public class PieceGenerator {
     }
 
     public Piece generate(Position position) {
-        ChessPieceType pieceType = pieceTypeDeterminer.determine(position);
+        PieceType pieceType = pieceTypeDeterminer.determine(position);
         Camp camp = pieceCampDeterminer.determineCamp(position.getNumbering());
         return new Piece(pieceType, camp);
     }

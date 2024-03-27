@@ -1,7 +1,7 @@
 package chess.domain;
 
 import chess.domain.piece.Camp;
-import chess.domain.piece.ChessPieceType;
+import chess.domain.piece.PieceType;
 import chess.domain.piece.Piece;
 import chess.domain.position.Lettering;
 import chess.domain.position.Numbering;
@@ -9,23 +9,23 @@ import chess.domain.position.Position;
 
 public class TestSetting {
 
-    public static final Piece KING_WHITE = new Piece(ChessPieceType.KING, Camp.WHITE);
-    public static final Piece KING_BLACK = new Piece(ChessPieceType.KING, Camp.BLACK);
+    public static final Piece KING_WHITE = new Piece(PieceType.KING, Camp.WHITE);
+    public static final Piece KING_BLACK = new Piece(PieceType.KING, Camp.BLACK);
 
-    public static final Piece QUEEN_WHITE = new Piece(ChessPieceType.QUEEN, Camp.WHITE);
-    public static final Piece QUEEN_BLACK = new Piece(ChessPieceType.QUEEN, Camp.BLACK);
+    public static final Piece QUEEN_WHITE = new Piece(PieceType.QUEEN, Camp.WHITE);
+    public static final Piece QUEEN_BLACK = new Piece(PieceType.QUEEN, Camp.BLACK);
 
-    public static final Piece BISHOP_WHITE = new Piece(ChessPieceType.BISHOP, Camp.WHITE);
-    public static final Piece BISHOP_BLACK = new Piece(ChessPieceType.BISHOP, Camp.BLACK);
+    public static final Piece BISHOP_WHITE = new Piece(PieceType.BISHOP, Camp.WHITE);
+    public static final Piece BISHOP_BLACK = new Piece(PieceType.BISHOP, Camp.BLACK);
 
-    public static final Piece ROOK_WHITE = new Piece(ChessPieceType.ROOK, Camp.WHITE);
-    public static final Piece ROOK_BLACK = new Piece(ChessPieceType.ROOK, Camp.BLACK);
+    public static final Piece ROOK_WHITE = new Piece(PieceType.ROOK, Camp.WHITE);
+    public static final Piece ROOK_BLACK = new Piece(PieceType.ROOK, Camp.BLACK);
 
-    public static final Piece KNIGHT_WHITE = new Piece(ChessPieceType.KNIGHT, Camp.WHITE);
-    public static final Piece KNIGHT_BLACK = new Piece(ChessPieceType.KNIGHT, Camp.BLACK);
+    public static final Piece KNIGHT_WHITE = new Piece(PieceType.KNIGHT, Camp.WHITE);
+    public static final Piece KNIGHT_BLACK = new Piece(PieceType.KNIGHT, Camp.BLACK);
 
-    public static final Piece PAWN_WHITE = new Piece(ChessPieceType.PAWN, Camp.WHITE);
-    public static final Piece PAWN_BLACK = new Piece(ChessPieceType.PAWN, Camp.BLACK);
+    public static final Piece PAWN_WHITE = new Piece(PieceType.PAWN, Camp.WHITE);
+    public static final Piece PAWN_BLACK = new Piece(PieceType.PAWN, Camp.BLACK);
 
     public static final Position A1 = new Position(Lettering.A, Numbering.ONE);
     public static final Position A2 = new Position(Lettering.A, Numbering.TWO);
