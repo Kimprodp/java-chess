@@ -18,9 +18,9 @@ public enum PieceType {
 
     KING(KingMoveStrategy::getInstance, 0.0),
     QUEEN(QueenMoveStrategy::getInstance, 9.0),
+    ROOK(RookMoveStrategy::getInstance, 5.0),
     BISHOP(BishopMoveStrategy::getInstance, 3.0),
     KNIGHT(KnightMoveStrategy::getInstance, 2.5),
-    ROOK(RookMoveStrategy::getInstance, 5.0),
     PAWN(PawnMoveStrategy::getInstance, 1.0);
 
     private static final double DEFAULT_SCORE = 0.0;
