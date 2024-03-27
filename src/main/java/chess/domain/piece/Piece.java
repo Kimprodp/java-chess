@@ -2,7 +2,7 @@ package chess.domain.piece;
 
 import chess.domain.PiecePosition;
 import chess.domain.position.Position;
-import chess.dto.ChessPieceDto;
+import chess.dto.PieceDto;
 import java.util.Set;
 
 public class Piece {
@@ -29,12 +29,11 @@ public class Piece {
         }
     }
 
-    public ChessPieceDto createDto() {
-        return new ChessPieceDto(getChessPieceType(), camp);
-
+    public PieceDto createDto() {
+        return new PieceDto(pieceType, camp);
     }
 
-    public PieceType getChessPieceType() {
+    public PieceType getPieceType() {
         return pieceType;
     }
 

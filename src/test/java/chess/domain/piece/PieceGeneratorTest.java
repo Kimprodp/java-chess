@@ -24,7 +24,7 @@ class PieceGeneratorTest {
         Piece piece = pieceGenerator.generate(position);
 
         //then
-        PieceType expectedKnight = piece.getChessPieceType();
+        PieceType expectedKnight = piece.getPieceType();
         Camp expectedWhite = piece.getCamp();
 
         assertAll(
