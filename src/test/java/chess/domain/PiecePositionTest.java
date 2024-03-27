@@ -8,8 +8,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import chess.domain.piece.Camp;
 import chess.domain.piece.Piece;
+import chess.domain.piece.PieceType;
 import chess.domain.position.Position;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -46,6 +49,45 @@ class PiecePositionTest {
         //then
         assertThatThrownBy(() -> piecePosition.findChessPieceOnPosition(notStartPositionOnPiece))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 체스말의_위치를_조회() {
+        //given
+        Piece pieceOnA1 = piecePosition.findChessPieceOnPosition(A1);
+
+        //when
+        Position positionByPiece = piecePosition.findPositionByPiece(pieceOnA1);
+
+        //then
+        assertThat(positionByPiece).isEqualTo(A1);
+    }
+
+    @Test
+    void 체스말의_위치_조회시_체스말이_없을_경우_예외발생() {
+        //given
+        Piece pieceOnA1 = piecePosition.findChessPieceOnPosition(A1);
+        Piece pieceOnA2 = piecePosition.findChessPieceOnPosition(A2);
+        piecePosition.movePiece(pieceOnA1, A2);
+
+        //when, then
+        assertThatThrownBy(() -> piecePosition.findPositionByPiece(pieceOnA2))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 특정_타입과_진영의_체스말을_모두_조회() {
+        //given, when
+        List<Piece> expectedWhiteBishopPieces = piecePosition.findPieceByTypeAndCamp(PieceType.BISHOP, Camp.WHITE);
+
+        //then
+        boolean isAllBishopAndWhite = expectedWhiteBishopPieces.stream()
+                .allMatch(piece -> piece.getPieceType() == PieceType.BISHOP && piece.getCamp() == Camp.WHITE);
+
+        assertAll(
+                () -> assertThat(expectedWhiteBishopPieces).hasSize(2),
+                () -> assertThat(isAllBishopAndWhite).isTrue()
+        );
     }
 
     @Test
