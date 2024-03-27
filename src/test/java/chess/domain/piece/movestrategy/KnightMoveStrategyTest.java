@@ -45,8 +45,6 @@ class KnightMoveStrategyTest {
         //when
         Set<Position> knightMoveRange = knightMoveStrategy.move(D5, piecePosition);
 
-        System.out.println(knightMoveRange);
-
         //then
         List<Position> upDirection = List.of(C7, E7);
         List<Position> downDirection = List.of(C3, E3);
@@ -77,8 +75,6 @@ class KnightMoveStrategyTest {
 
         //when
         Set<Position> knightMoveRange = knightMoveStrategy.move(D5, piecePosition);
-
-        System.out.println(knightMoveRange);
 
         //then
         List<Position> upDirection = List.of(C7, E7);
@@ -113,8 +109,6 @@ class KnightMoveStrategyTest {
         //when
         Set<Position> knightMoveRange = knightMoveStrategy.move(D5, piecePosition);
 
-        System.out.println(knightMoveRange);
-
         //then
         assertThat(knightMoveRange).isEmpty();
     }
@@ -137,8 +131,6 @@ class KnightMoveStrategyTest {
 
         //when
         Set<Position> knightMoveRange = knightMoveStrategy.move(D5, piecePosition);
-
-        System.out.println(knightMoveRange);
 
         //then
         List<Position> upDirection = List.of(C7, E7);

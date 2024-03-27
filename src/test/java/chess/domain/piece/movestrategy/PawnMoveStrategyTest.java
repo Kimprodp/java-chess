@@ -118,9 +118,6 @@ class PawnMoveStrategyTest {
         Set<Position> whitePawnMoveRange = pawnMoveStrategy.move(D5, piecePosition);
         Set<Position> blackPawnMoveRange = pawnMoveStrategy.move(E5, piecePosition);
 
-        System.out.println(whitePawnMoveRange);
-        System.out.println(blackPawnMoveRange);
-
         //then
         assertAll(
                 () -> assertThat(whitePawnMoveRange).contains(C6),
