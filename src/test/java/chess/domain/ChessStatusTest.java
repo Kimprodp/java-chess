@@ -13,7 +13,6 @@ import static chess.domain.TestSetting.D2;
 import static chess.domain.TestSetting.D3;
 import static chess.domain.TestSetting.KING_BLACK;
 import static chess.domain.TestSetting.KING_WHITE;
-import static chess.domain.TestSetting.KNIGHT_BLACK;
 import static chess.domain.TestSetting.KNIGHT_WHITE;
 import static chess.domain.TestSetting.QUEEN_WHITE;
 import static chess.domain.TestSetting.ROOK_BLACK;
@@ -65,12 +64,12 @@ class ChessStatusTest {
     void 킹을_잡은_진영을_승리팀으로_선정() {
         //given
         Map<Position, Piece> testPosition = new HashMap<>();
-        testPosition.put(D2, KNIGHT_WHITE);
-        testPosition.put(D3, KNIGHT_BLACK);
+        testPosition.put(D2, KING_WHITE);
+        testPosition.put(D3, KING_BLACK);
         PiecePosition piecePosition = new PiecePosition(testPosition);
 
         //when
-        piecePosition.movePiece(KNIGHT_WHITE, D3);
+        piecePosition.movePiece(KING_WHITE, D3);
         chessStatus.updateStatus(piecePosition);
 
         //then
@@ -115,12 +114,12 @@ class ChessStatusTest {
     void 승리팀이_있을_경우_게임_진행_불가를_반환() {
         //given
         Map<Position, Piece> testPosition = new HashMap<>();
-        testPosition.put(D2, KNIGHT_WHITE);
-        testPosition.put(D3, KNIGHT_BLACK);
+        testPosition.put(D2, KING_WHITE);
+        testPosition.put(D3, KING_BLACK);
         PiecePosition piecePosition = new PiecePosition(testPosition);
 
         //when
-        piecePosition.movePiece(KNIGHT_WHITE, D3);
+        piecePosition.movePiece(KING_BLACK, D2);
         chessStatus.updateStatus(piecePosition);
         boolean gameInProgress = chessStatus.isGameInProgress();
 
