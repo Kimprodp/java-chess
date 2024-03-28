@@ -1,28 +1,42 @@
 package chess.view;
 
-import chess.domain.chessboard.Numbering;
-import chess.domain.chessboard.Square;
-import chess.dto.ChessBoardDto;
-import chess.dto.ChessPieceDto;
+import chess.domain.position.BoardPosition;
+import chess.domain.position.Lettering;
+import chess.domain.position.Numbering;
+import chess.domain.position.Position;
+import chess.dto.PieceDto;
+import chess.dto.PiecePositionDto;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class OutputView {
 
-    private static final String SQUARE_FORMAT = ".";
+    private static final String NEW_LINE = System.lineSeparator();
+    private static final String NOT_PIECE_FORMAT = ".";
 
-    public static void printChessBoard(ChessBoardDto chessBoardDto) {
-        Map<Square, Optional<ChessPieceDto>> chessBoard = chessBoardDto.chessBoard();
+    public static void printGameStart() {
+        String startMessage =
+                "> 체스 게임을 시작합니다." + NEW_LINE
+                        + "> 게임 시작 : start" + NEW_LINE
+                        + "> 게임 종료 : end" + NEW_LINE
+                        + "> 게임 이동 : move source위치 target위치 - 예. move b2 b3";
+
+        System.out.println(startMessage);
+    }
+
+    public static void printChess(PiecePositionDto piecePositionDto) {
+        Map<Position, PieceDto> piecePosition = piecePositionDto.piecePosition();
         List<Numbering> numbering = reverseNumbering();
 
         for (Numbering number : numbering) {
-            List<Square> chessRow = selectChessRow(number, chessBoard);
-            printSquare(chessRow, chessBoard);
+            List<Position> chessRow = selectChessRow(number);
+            printPosition(chessRow, piecePosition);
             System.out.println();
         }
+        System.out.println();
     }
 
     private static List<Numbering> reverseNumbering() {
@@ -31,30 +45,30 @@ public class OutputView {
         return numbering;
     }
 
-    private static List<Square> selectChessRow(Numbering number, Map<Square, Optional<ChessPieceDto>> chessBoard) {
-        return chessBoard.keySet().stream()
-                .filter(square -> square.getNumbering() == number)
+    private static List<Position> selectChessRow(Numbering number) {
+        return Arrays.stream(Lettering.values())
+                .map(lettering -> BoardPosition.findPosition(lettering, number))
                 .toList();
     }
 
-    private static void printSquare(List<Square> chessRow, Map<Square, Optional<ChessPieceDto>> chessBoard) {
-        for (Square square : chessRow) {
-            ChessPieceDto chessPieceDto = chessBoard.get(square).orElse(null);
-            printSquareWithChessPiece(chessPieceDto);
-            printSquareWithoutChessPiece(chessPieceDto);
+    private static void printPosition(List<Position> chessRow, Map<Position, PieceDto> piecePosition) {
+        for (Position position : chessRow) {
+            printPositionWithChessPiece(piecePosition, position);
+            printPositionWithoutChessPiece(piecePosition, position);
         }
     }
 
-    private static void printSquareWithChessPiece(ChessPieceDto chessPieceDto) {
-        if (chessPieceDto != null) {
-            String chessPieceNotation = ChessPiecePrintFormat.findChessPieceNotation(chessPieceDto);
+    private static void printPositionWithChessPiece(Map<Position, PieceDto> piecePosition, Position position) {
+        if (piecePosition.containsKey(position)) {
+            PieceDto pieceDto = piecePosition.get(position);
+            String chessPieceNotation = ChessPiecePrintFormat.findChessPieceNotation(pieceDto);
             System.out.print(chessPieceNotation);
         }
     }
 
-    private static void printSquareWithoutChessPiece(ChessPieceDto chessPieceDto) {
-        if (chessPieceDto == null) {
-            System.out.print(SQUARE_FORMAT);
+    private static void printPositionWithoutChessPiece(Map<Position, PieceDto> piecePosition, Position position) {
+        if (!piecePosition.containsKey(position)) {
+            System.out.print(NOT_PIECE_FORMAT);
         }
     }
 }
