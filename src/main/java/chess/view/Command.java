@@ -33,10 +33,11 @@ public class Command {
 
     private void registerMoveCommandDto(List<String> separatedInput) {
         validateMove(separatedInput);
-        PositionDto moveSource = convertPositionDto(separatedInput.get(SECOND_VALUE));
-        PositionDto target = convertPositionDto(separatedInput.get(THIRD_VALUE));
-        this.moveCommandDto = new MoveCommandDto(moveSource, target);
-
+        if (separatedInput.size() == 3) {
+            PositionDto moveSource = convertPositionDto(separatedInput.get(SECOND_VALUE));
+            PositionDto target = convertPositionDto(separatedInput.get(THIRD_VALUE));
+            this.moveCommandDto = new MoveCommandDto(moveSource, target);
+        }
     }
 
     private PositionDto convertPositionDto(String input) {
@@ -66,11 +67,11 @@ public class Command {
     }
 
     private void validateMove(List<String> separatedInput) {
-        if (commandType != CommandType.MOVE) {
-            throw new IllegalArgumentException("[ERROR] 체스말 이동은 move를 사용해주세요");
-        }
-        if (separatedInput.size() != 3) {
+        if (commandType == CommandType.MOVE && separatedInput.size() != 3) {
             throw new IllegalArgumentException("[ERROR] 체스말 이동은 이동할 위치 정보가 필요합니다.");
+        }
+        if (commandType != CommandType.MOVE && separatedInput.size() == 3) {
+            throw new IllegalArgumentException("[ERROR] 체스말 이동은 move를 사용해주세요");
         }
     }
 
