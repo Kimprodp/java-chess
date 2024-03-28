@@ -33,7 +33,7 @@ public sealed class MovablePositionGenerator
         do {
             sizeBeforeAddition = movablePosition.size();
             directionAdder.accept(lastAddedPosition, piecePosition);
-            lastAddedPosition = movablePosition.get(movablePosition.size() - 1);
+            lastAddedPosition = calculateLastAddedPosition();
         } while (canPositionAdd(sizeBeforeAddition, lastAddedPosition, piecePosition));
     }
 
@@ -139,7 +139,7 @@ public sealed class MovablePositionGenerator
     }
 
     protected void addDownLeftDirection(Position lastAddedPosition, PiecePosition piecePosition) {
-        if (BoardPosition.canFindUpPosition(lastAddedPosition) &&
+        if (BoardPosition.canFindDownPosition(lastAddedPosition) &&
                 BoardPosition.canFindLeftPosition(lastAddedPosition)) {
             Position downPosition = BoardPosition.findDownPosition(lastAddedPosition);
             Position downLeftPosition = BoardPosition.findLeftPosition(downPosition);
@@ -175,6 +175,13 @@ public sealed class MovablePositionGenerator
         }
     }
 
+    private Position calculateLastAddedPosition() {
+        if (movablePosition.isEmpty()) {
+            return standardPosition;
+        }
+        return movablePosition.get(movablePosition.size() - 1);
+    }
+
     private boolean isDifferentCamp(Position positionToAdd, PiecePosition piecePosition) {
         Piece pieceOnStartPosition = piecePosition.findChessPieceOnPosition(standardPosition);
         Piece pieceOnMovePosition = piecePosition.findChessPieceOnPosition(positionToAdd);
@@ -186,10 +193,6 @@ public sealed class MovablePositionGenerator
         boolean isPositionAdded = movablePosition.size() == sizeBeforeAddition + 1;
         boolean hasPieceAtLastPosition = piecePosition.hasPieceAt(lastAddedPosition);
         return isPositionAdded && !hasPieceAtLastPosition;
-    }
-
-    protected final int getSize() {
-        return movablePosition.size();
     }
 
     protected final Set<Position> getMovablePosition() {
