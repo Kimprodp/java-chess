@@ -26,7 +26,7 @@ class ChessGameTest {
         testPosition.put(D3, KING_BLACK);
         PiecePosition piecePosition = new PiecePosition(testPosition);
         TurnExecutor turnExecutor = new TurnExecutor(piecePosition);
-        ChessStatus chessStatus = new ChessStatus();
+        ChessStatus chessStatus = new ChessStatus(piecePosition);
 
         ChessGame chessGame = new ChessGame(turnExecutor, chessStatus);
         chessGame.executeTurn(D2, D3);

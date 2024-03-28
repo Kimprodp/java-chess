@@ -33,7 +33,7 @@ class TurnExecutorTest {
         testPosition.put(D3, ROOK_BLACK);
         PiecePosition piecePosition = new PiecePosition(testPosition);
         this.turnExecutor = new TurnExecutor(piecePosition);
-        this.chessStatus = new ChessStatus();
+        this.chessStatus = new ChessStatus(piecePosition);
     }
 
     @Test

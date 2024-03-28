@@ -7,6 +7,7 @@ import chess.domain.game.PiecePositionInitializer;
 import chess.domain.game.TurnExecutor;
 import chess.domain.position.BoardPosition;
 import chess.domain.position.Position;
+import chess.dto.ChessStatusDto;
 import chess.dto.MoveCommandDto;
 import chess.dto.PiecePositionDto;
 import chess.dto.PositionDto;
@@ -28,8 +29,10 @@ public class ChessGameController {
             validateProgressCommand(command);
             end(command);
             move(command, chessGame);
-            status(command);
+            status(command, chessGame);
         }
+
+        OutputView.printStatus(chessGame.requestStatus());
     }
 
     private ChessGame startGame() {
@@ -38,25 +41,25 @@ public class ChessGameController {
         validateStartCommand(command);
         isGameInProgress = true;
 
-        PiecePosition piecePosition = initialPiecePosition(command);
+        PiecePosition piecePosition = initialPiecePosition();
         OutputView.printChess(piecePosition.createDto());
 
         return createChessGame(piecePosition);
     }
 
-    private PiecePosition initialPiecePosition(Command command) {
+    private PiecePosition initialPiecePosition() {
         PiecePositionInitializer piecePositionInitializer = PiecePositionInitializer.getInstance();
         return new PiecePosition(piecePositionInitializer.generateInitializedPiecePosition());
     }
 
     private ChessGame createChessGame(PiecePosition piecePosition) {
         TurnExecutor turnExecutor = new TurnExecutor(piecePosition);
-        ChessStatus chessStatus = new ChessStatus();
+        ChessStatus chessStatus = new ChessStatus(piecePosition);
         return new ChessGame(turnExecutor, chessStatus);
     }
 
     private void move(Command command, ChessGame chessGame) {
-        if (command.getCommandType() == CommandType.MOVE) {
+        if (command.getCommandType() == CommandType.MOVE && chessGame.isGameInProgress()) {
             MoveCommandDto moveCommandDto = extractMoveCommand(command);
             PositionDto moveSourceDto = moveCommandDto.moveSource();
             PositionDto targetDto = moveCommandDto.target();
@@ -66,6 +69,9 @@ public class ChessGameController {
             PiecePositionDto piecePositionDto = chessGame.executeTurn(moveSource, target);
             OutputView.printChess(piecePositionDto);
         }
+        if (!chessGame.isGameInProgress()) {
+            isGameInProgress = false;
+        }
     }
 
     private void end(Command command) {
@@ -74,10 +80,10 @@ public class ChessGameController {
         }
     }
 
-    //TODO
-    private void status(Command command) {
+    private void status(Command command, ChessGame chessGame) {
         if (command.getCommandType() == CommandType.STATUS) {
-            isGameInProgress = false;
+            ChessStatusDto chessStatusDto = chessGame.requestStatus();
+            OutputView.printStatus(chessStatusDto);
         }
     }
 

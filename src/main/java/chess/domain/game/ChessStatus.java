@@ -13,23 +13,21 @@ public class ChessStatus {
 
     private static final double DEFAULT_SCORE = 0.0;
 
-    private Camp winner;
-    private final Map<Camp, Double> score;
+    private Camp winner = Camp.NONE;
+    private final Map<Camp, Double> score = new HashMap<>();
 
-    public ChessStatus() {
-        this.winner = Camp.NONE;
-        this.score = initialSetting();
+    public ChessStatus(PiecePosition piecePosition) {
+        initialScoreSetting();
+        updateStatus(piecePosition);
     }
 
-    private Map<Camp, Double> initialSetting() {
-        Map<Camp, Double> score = new HashMap<>();
+    private void initialScoreSetting() {
         score.put(Camp.WHITE, DEFAULT_SCORE);
         score.put(Camp.BLACK, DEFAULT_SCORE);
-
-        return score;
     }
 
     public void updateStatus(PiecePosition piecePosition) {
+        initialScoreSetting();
         updateWinner(piecePosition);
         updateStatusForm(piecePosition, Camp.WHITE);
         updateStatusForm(piecePosition, Camp.BLACK);

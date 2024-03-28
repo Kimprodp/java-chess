@@ -33,26 +33,15 @@ import org.junit.jupiter.api.Test;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class ChessStatusTest {
 
-    ChessStatus chessStatus = new ChessStatus();
-
-    @Test
-    void 점수는_초기_0점으로_설정() {
-        //given, when
-        ChessStatusDto status = chessStatus.getStatus();
-        Map<Camp, Double> score = status.score();
-
-        //then
-        boolean allScoreInitialized = score.keySet().stream()
-                .allMatch(camp -> score.get(camp) == 0);
-
-        assertThat(allScoreInitialized).isTrue();
-    }
-
     @Test
     void 승리팀은_초기_NONE으로_설정() {
         //given, when
+        Map<Position, Piece> testPosition = new HashMap<>();
+        testPosition.put(D2, KING_WHITE);
+        testPosition.put(D3, KING_BLACK);
+        PiecePosition piecePosition = new PiecePosition(testPosition);
+        ChessStatus chessStatus = new ChessStatus(piecePosition);
         ChessStatusDto status = chessStatus.getStatus();
-        Map<Camp, Double> score = status.score();
 
         //then
         Camp winnerCamp = status.winner();
@@ -67,6 +56,7 @@ class ChessStatusTest {
         testPosition.put(D2, KING_WHITE);
         testPosition.put(D3, KING_BLACK);
         PiecePosition piecePosition = new PiecePosition(testPosition);
+        ChessStatus chessStatus = new ChessStatus(piecePosition);
 
         //when
         piecePosition.movePiece(KING_WHITE, D3);
@@ -95,6 +85,7 @@ class ChessStatusTest {
         testPosition.put(D2, ROOK_BLACK); // 5
         testPosition.put(D3, KING_BLACK); // 0
         PiecePosition piecePosition = new PiecePosition(testPosition);
+        ChessStatus chessStatus = new ChessStatus(piecePosition);
 
         //when
         chessStatus.updateStatus(piecePosition);
@@ -117,6 +108,7 @@ class ChessStatusTest {
         testPosition.put(D2, KING_WHITE);
         testPosition.put(D3, KING_BLACK);
         PiecePosition piecePosition = new PiecePosition(testPosition);
+        ChessStatus chessStatus = new ChessStatus(piecePosition);
 
         //when
         piecePosition.movePiece(KING_BLACK, D2);
