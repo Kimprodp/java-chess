@@ -7,8 +7,8 @@ import static chess.domain.TestSetting.D4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import chess.domain.PiecePosition;
-import chess.domain.PiecePositionInitializer;
+import chess.domain.game.PiecePosition;
+import chess.domain.game.PiecePositionInitializer;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;

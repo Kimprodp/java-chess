@@ -18,7 +18,7 @@ import static chess.domain.TestSetting.G8;
 import static chess.domain.TestSetting.H1;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import chess.domain.PiecePosition;
+import chess.domain.game.PiecePosition;
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
 import java.util.HashMap;

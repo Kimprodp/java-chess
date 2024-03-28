@@ -1,6 +1,6 @@
 package chess.domain.piece.movestrategy;
 
-import chess.domain.PiecePosition;
+import chess.domain.game.PiecePosition;
 import chess.domain.position.Position;
 import java.util.Set;
 

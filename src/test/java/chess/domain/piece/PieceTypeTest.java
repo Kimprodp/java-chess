@@ -10,7 +10,7 @@ import static chess.domain.TestSetting.PAWN_WHITE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import chess.domain.PiecePosition;
+import chess.domain.game.PiecePosition;
 import chess.domain.position.Position;
 import java.util.HashMap;
 import java.util.List;

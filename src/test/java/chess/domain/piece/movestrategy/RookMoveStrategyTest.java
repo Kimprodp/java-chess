@@ -19,7 +19,7 @@ import static chess.domain.TestSetting.ROOK_BLACK;
 import static chess.domain.TestSetting.ROOK_WHITE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import chess.domain.PiecePosition;
+import chess.domain.game.PiecePosition;
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
 import java.util.HashMap;

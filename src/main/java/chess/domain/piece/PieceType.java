@@ -1,6 +1,6 @@
 package chess.domain.piece;
 
-import chess.domain.PiecePosition;
+import chess.domain.game.PiecePosition;
 import chess.domain.piece.movestrategy.BishopMoveStrategy;
 import chess.domain.piece.movestrategy.KingMoveStrategy;
 import chess.domain.piece.movestrategy.KnightMoveStrategy;
