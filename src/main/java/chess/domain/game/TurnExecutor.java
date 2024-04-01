@@ -10,9 +10,9 @@ public class TurnExecutor {
     private final PiecePosition piecePosition;
     private Camp turnToMove;
 
-    public TurnExecutor(PiecePosition piecePosition) {
+    public TurnExecutor(PiecePosition piecePosition, Camp turnToMove) {
         this.piecePosition = piecePosition;
-        this.turnToMove = Camp.WHITE;
+        this.turnToMove = turnToMove;
     }
 
     public PiecePositionDto execute(Position moveSource, Position target, ChessStatus chessStatus) {
@@ -22,6 +22,10 @@ public class TurnExecutor {
         pieceToMove.move(moveSource, target, piecePosition);
         chessStatus.updateStatus(piecePosition);
         changeTurn();
+        return piecePosition.createDto();
+    }
+
+    public PiecePositionDto requestPiecePosition() {
         return piecePosition.createDto();
     }
 
@@ -43,5 +47,9 @@ public class TurnExecutor {
         if (pieceToMove.getCamp() != turnToMove) {
             throw new IllegalArgumentException("[ERROR] 현재 실행 가능한 턴의 체스말이 아닙니다. : " + pieceToMove);
         }
+    }
+
+    public Camp getTurnToMove() {
+        return turnToMove;
     }
 }

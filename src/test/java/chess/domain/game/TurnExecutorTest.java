@@ -9,6 +9,7 @@ import static chess.domain.TestSetting.ROOK_WHITE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import chess.domain.piece.Camp;
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
 import chess.dto.PieceDto;
@@ -32,7 +33,7 @@ class TurnExecutorTest {
         testPosition.put(D2, ROOK_WHITE);
         testPosition.put(D3, ROOK_BLACK);
         PiecePosition piecePosition = new PiecePosition(testPosition);
-        this.turnExecutor = new TurnExecutor(piecePosition);
+        this.turnExecutor = new TurnExecutor(piecePosition, Camp.WHITE);
         this.chessStatus = new ChessStatus(piecePosition);
     }
 

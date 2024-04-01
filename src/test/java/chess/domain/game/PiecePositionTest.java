@@ -25,8 +25,8 @@ class PiecePositionTest {
 
     @BeforeEach
     void beforeEach() {
-        PiecePositionInitializer piecePositionInitializer = PiecePositionInitializer.getInstance();
-        this.piecePosition = new PiecePosition(piecePositionInitializer.generateInitializedPiecePosition());
+        PiecePositionGenerator piecePositionGenerator = PiecePositionGenerator.getInstance();
+        this.piecePosition = new PiecePosition(piecePositionGenerator.generatePiecePosition());
     }
 
     @Test

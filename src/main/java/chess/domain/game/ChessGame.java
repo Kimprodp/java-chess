@@ -1,5 +1,6 @@
 package chess.domain.game;
 
+import chess.domain.piece.Camp;
 import chess.domain.position.Position;
 import chess.dto.ChessStatusDto;
 import chess.dto.PiecePositionDto;
@@ -17,6 +18,14 @@ public class ChessGame {
     public PiecePositionDto executeTurn(Position moveSource, Position target) {
         validateGameInProgress();
         return turnExecutor.execute(moveSource, target, chessStatus);
+    }
+
+    public PiecePositionDto requestPiecePosition() {
+        return turnExecutor.requestPiecePosition();
+    }
+
+    public Camp requestCurrentTurn() {
+        return turnExecutor.getTurnToMove();
     }
 
     public ChessStatusDto requestStatus() {

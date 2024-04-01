@@ -7,6 +7,7 @@ import static chess.domain.TestSetting.KING_BLACK;
 import static chess.domain.TestSetting.KING_WHITE;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import chess.domain.piece.Camp;
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ class ChessGameTest {
         testPosition.put(D2, KING_WHITE);
         testPosition.put(D3, KING_BLACK);
         PiecePosition piecePosition = new PiecePosition(testPosition);
-        TurnExecutor turnExecutor = new TurnExecutor(piecePosition);
+        TurnExecutor turnExecutor = new TurnExecutor(piecePosition, Camp.WHITE);
         ChessStatus chessStatus = new ChessStatus(piecePosition);
 
         ChessGame chessGame = new ChessGame(turnExecutor, chessStatus);
