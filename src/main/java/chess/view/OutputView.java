@@ -43,7 +43,7 @@ public class OutputView {
             printPosition(chessRow, piecePosition);
             System.out.println();
         }
-//        printDeadPiece(piecePositionDto.lastDeadPiece());
+
         System.out.println();
     }
 
@@ -120,8 +120,4 @@ public class OutputView {
             System.out.printf("흑팀 점수 : %.1f%s", score, NEW_LINE);
         }
     }
-//    private static void printDeadPiece(PieceDto pieceDto) {
-//        String chessPieceNotation = ChessPiecePrintFormat.findChessPieceNotation(pieceDto);
-//        System.out.print(chessPieceNotation);
-//    }
 }

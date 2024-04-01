@@ -29,7 +29,7 @@ public class ChessGameController {
             status(command, chessGame);
         }
 
-        OutputView.printStatus(chessGame.requestStatus());
+        showGameEnd(chessGame);
     }
 
     private ChessGame startGame() {
@@ -81,6 +81,11 @@ public class ChessGameController {
             ChessStatusDto chessStatusDto = chessGame.requestStatus();
             OutputView.printStatus(chessStatusDto);
         }
+    }
+
+    private static void showGameEnd(ChessGame chessGame) {
+        OutputView.printGameEnd();
+        OutputView.printStatus(chessGame.requestStatus());
     }
 
     private MoveCommandDto extractMoveCommand(Command command) {
