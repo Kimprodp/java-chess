@@ -1,24 +1,20 @@
 package chess.domain.position;
 
-import chess.service.ChessDataInitializer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class BoardPosition {
 
-    private static final List<Position> CHESSBOARD = new ArrayList<>();
+    private static final List<Position> CHESSBOARD = generateBoard();
 
     private BoardPosition() {
     }
 
-    public static void generateBoard() {
-        ChessDataInitializer dataInitializer = ChessDataInitializer.getInstance();
-
-        Arrays.stream(Lettering.values())
+    private static List<Position> generateBoard() {
+        return Arrays.stream(Lettering.values())
                 .flatMap(lettering -> Arrays.stream(Numbering.values())
-                        .map(numbering -> dataInitializer.findPosition(lettering, numbering)))
-                .forEach(CHESSBOARD::add);
+                        .map(numbering -> new Position(lettering, numbering)))
+                .toList();
     }
 
     public static boolean canFindUpPosition(Position position) {

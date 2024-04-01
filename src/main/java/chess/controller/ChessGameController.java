@@ -7,7 +7,6 @@ import chess.dto.ChessStatusDto;
 import chess.dto.MoveCommandDto;
 import chess.dto.PiecePositionDto;
 import chess.dto.PositionDto;
-import chess.service.ChessDataInitializer;
 import chess.service.GameSaveManager;
 import chess.view.Command;
 import chess.view.CommandType;
@@ -20,7 +19,6 @@ public class ChessGameController {
     private boolean isGameInProgress;
 
     public void run() {
-        registerGameResource();
         ChessGame chessGame = startGame();
 
         while (isGameInProgress) {
@@ -32,12 +30,6 @@ public class ChessGameController {
         }
 
         OutputView.printStatus(chessGame.requestStatus());
-    }
-
-    private void registerGameResource() {
-        ChessDataInitializer dataInitializer = ChessDataInitializer.getInstance();
-        dataInitializer.registerChessResource();
-        BoardPosition.generateBoard();
     }
 
     private ChessGame startGame() {
