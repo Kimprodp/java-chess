@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import chess.domain.game.PiecePosition;
-import chess.domain.game.PiecePositionInitializer;
+import chess.domain.game.PiecePositionGenerator;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -19,8 +19,8 @@ class PieceTest {
     @Test
     void 특정_위치로_체스말을_이동() {
         //given
-        PiecePositionInitializer piecePositionInitializer = PiecePositionInitializer.getInstance();
-        PiecePosition piecePosition = new PiecePosition(piecePositionInitializer.generateInitializedPiecePosition());
+        PiecePositionGenerator piecePositionGenerator = PiecePositionGenerator.getInstance();
+        PiecePosition piecePosition = new PiecePosition(piecePositionGenerator.generatePiecePosition());
         Piece whitePawn = piecePosition.findChessPieceOnPosition(D2);
 
         //when
@@ -35,8 +35,8 @@ class PieceTest {
     @Test
     void 이동할_체스말이_올바른_위치에_있지_않을_경우_예외발생() {
         //given
-        PiecePositionInitializer piecePositionInitializer = PiecePositionInitializer.getInstance();
-        PiecePosition piecePosition = new PiecePosition(piecePositionInitializer.generateInitializedPiecePosition());
+        PiecePositionGenerator piecePositionGenerator = PiecePositionGenerator.getInstance();
+        PiecePosition piecePosition = new PiecePosition(piecePositionGenerator.generatePiecePosition());
         Piece whitePawn = piecePosition.findChessPieceOnPosition(D2);
 
         //when, then

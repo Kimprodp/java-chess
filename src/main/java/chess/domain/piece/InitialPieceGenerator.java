@@ -1,24 +1,27 @@
 package chess.domain.piece;
 
+import chess.service.ChessDataInitializer;
 import chess.domain.position.Position;
 
-public class PieceGenerator {
+public class InitialPieceGenerator {
 
-    private static final PieceGenerator INSTANCE = new PieceGenerator();
+    private static final InitialPieceGenerator INSTANCE = new InitialPieceGenerator();
 
     private final PieceCampDeterminer pieceCampDeterminer = PieceCampDeterminer.getInstance();
     private final PieceTypeDeterminer pieceTypeDeterminer = PieceTypeDeterminer.getInstance();
 
-    private PieceGenerator() {
+    private InitialPieceGenerator() {
     }
 
-    public static PieceGenerator getInstance() {
+    public static InitialPieceGenerator getInstance() {
         return INSTANCE;
     }
 
     public Piece generate(Position position) {
+        ChessDataInitializer chessDataInitializer = ChessDataInitializer.getInstance();
+
         PieceType pieceType = pieceTypeDeterminer.determine(position);
         Camp camp = pieceCampDeterminer.determineCamp(position.getNumbering());
-        return new Piece(pieceType, camp);
+        return chessDataInitializer.findPiece(pieceType, camp);
     }
 }
