@@ -29,6 +29,10 @@ public class OutputView {
         System.out.println(startMessage);
     }
 
+    public static void printLoadGameStart() {
+        System.out.println("* 이전에 종료되지 않은 게임이 있습니다. 게임을 불러오려면 'load'를 입력해주세요.");
+    }
+
     public static void printChess(PiecePositionDto piecePositionDto) {
         Map<Position, PieceDto> piecePosition = piecePositionDto.piecePosition();
         List<Numbering> numbering = reverseNumbering();
@@ -38,6 +42,7 @@ public class OutputView {
             printPosition(chessRow, piecePosition);
             System.out.println();
         }
+//        printDeadPiece(piecePositionDto.lastDeadPiece());
         System.out.println();
     }
 
