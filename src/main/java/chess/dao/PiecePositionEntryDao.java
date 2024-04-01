@@ -62,8 +62,7 @@ public class PiecePositionEntryDao {
             preparedStatement.setInt(1, piecePositionId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            validatePiecePositionIdExist(piecePositionId, resultSet);
-            return createEntry(resultSet);
+            return createEntry(resultSet, piecePositionId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -142,7 +141,7 @@ public class PiecePositionEntryDao {
         }
     }
 
-    private Map<PositionEntity, PieceEntity> createEntry(ResultSet resultSet) throws SQLException {
+    private Map<PositionEntity, PieceEntity> createEntry(ResultSet resultSet, int piecePositionId) throws SQLException {
         Map<PositionEntity, PieceEntity> piecePosition = new HashMap<>();
         while (resultSet.next()) {
             int positionId = resultSet.getInt("position_id");
@@ -151,12 +150,13 @@ public class PiecePositionEntryDao {
             PieceEntity pieceEntity = pieceDao.findById(pieceId);
             piecePosition.put(positionEntity, pieceEntity);
         }
+        validatePiecePositionIdExist(piecePosition, piecePositionId);
         return piecePosition;
     }
 
-    private void validatePiecePositionIdExist(int findPiecePositionId, ResultSet resultSet) throws SQLException {
-        if (!resultSet.next()) {
-            throw new IllegalArgumentException("[ERROR] piecePositionId로 저장된 정보가 없습니다. : " + findPiecePositionId);
+    private void validatePiecePositionIdExist(Map<PositionEntity, PieceEntity> piecePosition, int piecePositionId) {
+        if (piecePosition.isEmpty()) {
+            throw new IllegalArgumentException("[ERROR] piecePositionId로 저장된 정보가 없습니다. : " + piecePositionId);
         }
     }
 
