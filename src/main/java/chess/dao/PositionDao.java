@@ -1,18 +1,14 @@
 package chess.dao;
 
 import chess.entity.PositionEntity;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class PositionDao extends DaoTemplate {
+public final class PositionDao extends DaoTemplate<PositionEntity> {
 
     private static final PositionDao INSTANCE = new PositionDao();
-
-    private static final String COLUMN_KEY = "position_id";
-    private static final String QUERY_ADD = "INSERT INTO position VALUES(0, ?, ?)";
-    private static final String QUERY_FIND = "SELECT * FROM position WHERE lettering = ? AND numbering = ?";
-    private static final String QUERY_FIND_BY_ID = "SELECT * FROM position WHERE position_id = ?";
-    private static final String QUERY_HAS_DATA = "SELECT EXISTS (SELECT 1 FROM position)";
 
     private PositionDao() {
     }
@@ -22,40 +18,50 @@ public final class PositionDao extends DaoTemplate {
     }
 
     public void add(PositionEntity entity) {
-        add(QUERY_ADD, preparedStatement -> {
-            try {
-                preparedStatement.setString(1, entity.getLettering());
-                preparedStatement.setString(2, entity.getNumbering());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
-    public PositionEntity findById(int positionId) {
-        try (ResultSet resultSet = findById(QUERY_FIND_BY_ID, positionId)) {
-            validateResultSetExist(resultSet);
-            return new PositionEntity(
-                    resultSet.getString("lettering"),
-                    resultSet.getString("numbering")
-            );
+        String query = "INSERT INTO position VALUES(0, ?, ?)";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query, entity.getLettering(),
+                     entity.getNumbering())) {
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public PositionEntity findById(int positionId) {
+        String query = "SELECT * FROM position WHERE position_id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query, positionId);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            return mappingResult(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private PositionEntity mappingResult(ResultSet resultSet) throws SQLException {
+        validateResultSetExist(resultSet);
+        return new PositionEntity(
+                resultSet.getString("lettering"),
+                resultSet.getString("numbering")
+        );
+    }
+
     public int findId(PositionEntity entity) {
-        return findId(QUERY_FIND, COLUMN_KEY, preparedStatement -> {
-            try {
-                preparedStatement.setString(1, entity.getLettering());
-                preparedStatement.setString(2, entity.getNumbering());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        String query = "SELECT * FROM position WHERE lettering = ? AND numbering = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(
+                     connection, query, entity.getLettering(), entity.getNumbering());
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            validateResultSetExist(resultSet);
+            return resultSet.getInt("position_id");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean hasData() {
-        return hasData(QUERY_HAS_DATA);
+        String query = "SELECT EXISTS (SELECT 1 FROM position)";
+        return hasData(query);
     }
 }

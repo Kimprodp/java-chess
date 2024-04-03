@@ -27,7 +27,7 @@ public class ChessDataInitializer {
         return INSTANCE;
     }
 
-    private void registerChessResource() {
+    public void registerChessResource() {
         if (!positionDao.hasData()) {
             addAllPosition();
         }

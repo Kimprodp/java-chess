@@ -53,11 +53,12 @@ public class GameSaveManager {
         ChessGame chessGame = inProgressGameInfo.chessGame();
 
         int piecePositionId = chessGameData.getPiecePositionId();
-        int movedPositionId = extractPositionId(turnResult);
+        int movePositionId = extractMovePositionId(turnResult);
+        int targetPositionId = extractTargetPositionId(turnResult);
         int movedPieceId = extractPieceId(turnResult);
 
-        deletePreviousPosition(piecePositionId, movedPieceId);
-        updateMoveResult(piecePositionId, movedPositionId, movedPieceId);
+        deletePreviousPosition(piecePositionId, movePositionId, movedPieceId);
+        updateMoveResult(piecePositionId, targetPositionId, movedPieceId);
         updateGameStatus(chessGame, chessGameData.getChessGameId(), piecePositionId);
     }
 
@@ -94,8 +95,8 @@ public class GameSaveManager {
         return PIECE_POSITION_DAO.findEntryByPiecePositionId(piecePositionId);
     }
 
-    private void deletePreviousPosition(int piecePositionId, int pieceIdToDelete) {
-        PIECE_POSITION_DAO.deleteEntryByPiece(piecePositionId, pieceIdToDelete);
+    private void deletePreviousPosition(int piecePositionId, int positionId, int pieceId) {
+        PIECE_POSITION_DAO.deleteEntryByPiece(new PiecePositionEntryEntity(piecePositionId, positionId, pieceId));
     }
 
     private void updateMoveResult(int piecePositionIdToUpdate, int positionIdToUpdate, int pieceIdToUpdate) {
@@ -113,7 +114,12 @@ public class GameSaveManager {
         CHESS_GAME_DAO.updateStatus(new ChessGameEntity(chessGameId, piecePositionId, turnToMove));
     }
 
-    private int extractPositionId(TurnResult turnResult) {
+    private int extractMovePositionId(TurnResult turnResult) {
+        Position moveResource = turnResult.moveResource();
+        return POSITION_DAO.findId(new PositionEntity(moveResource.getLettering(), moveResource.getNumbering()));
+    }
+
+    private int extractTargetPositionId(TurnResult turnResult) {
         Position target = turnResult.target();
         return POSITION_DAO.findId(new PositionEntity(target.getLettering(), target.getNumbering()));
     }

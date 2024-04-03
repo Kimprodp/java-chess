@@ -20,6 +20,7 @@ import chess.dto.PositionDto;
 import chess.entity.ChessGameEntity;
 import chess.entity.PieceEntity;
 import chess.entity.PositionEntity;
+import chess.service.ChessDataInitializer;
 import chess.service.GameSaveManager;
 import chess.view.Command;
 import chess.view.CommandType;
@@ -34,6 +35,7 @@ public class ChessGameController {
     private final GameSaveManager gameSaveManager = new GameSaveManager();
 
     public void run() {
+        registerResource();
         InProgressGameInfo inProgressGameInfo = startGame();
         ChessGame chessGame = inProgressGameInfo.chessGame();
         showChess(chessGame);
@@ -46,6 +48,11 @@ public class ChessGameController {
             isGameInProgress = chessGame.isGameInProgress() && command.getCommandType() != CommandType.END;
         }
         showGameEnd(chessGame);
+    }
+
+    private static void registerResource() {
+        ChessDataInitializer chessDataInitializer = ChessDataInitializer.getInstance();
+        chessDataInitializer.registerChessResource();
     }
 
     private InProgressGameInfo startGame() {

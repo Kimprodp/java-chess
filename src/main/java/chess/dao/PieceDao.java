@@ -1,18 +1,14 @@
 package chess.dao;
 
 import chess.entity.PieceEntity;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class PieceDao extends DaoTemplate {
+public final class PieceDao extends DaoTemplate<PieceEntity> {
 
     private static final PieceDao INSTANCE = new PieceDao();
-
-    private static final String COLUMN_KEY = "piece_id";
-    private static final String QUERY_ADD = "INSERT INTO piece VALUES(0, ?, ?)";
-    private static final String QUERY_FIND = "SELECT * FROM piece WHERE type = ? AND camp = ?";
-    private static final String QUERY_FIND_BY_ID = "SELECT * FROM piece WHERE piece_id = ?";
-    private static final String QUERY_HAS_DATA = "SELECT EXISTS (SELECT 1 FROM piece)";
 
     private PieceDao() {
     }
@@ -22,40 +18,50 @@ public final class PieceDao extends DaoTemplate {
     }
 
     public void add(PieceEntity entity) {
-        add(QUERY_ADD, preparedStatement -> {
-            try {
-                preparedStatement.setString(1, entity.getType());
-                preparedStatement.setString(2, entity.getCamp());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
-    public PieceEntity findById(int pieceId) {
-        try (ResultSet resultSet = findById(QUERY_FIND_BY_ID, pieceId)) {
-            validateResultSetExist(resultSet);
-            return new PieceEntity(
-                    resultSet.getString("type"),
-                    resultSet.getString("camp")
-            );
+        String query = "INSERT INTO piece VALUES(0, ?, ?)";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query, entity.getType(),
+                     entity.getCamp())) {
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public PieceEntity findById(int pieceId) {
+        String query = "SELECT * FROM piece WHERE piece_id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query, pieceId);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            return mappingResult(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private PieceEntity mappingResult(ResultSet resultSet) throws SQLException {
+        validateResultSetExist(resultSet);
+        return new PieceEntity(
+                resultSet.getString("type"),
+                resultSet.getString("camp")
+        );
+    }
+
     public int findId(PieceEntity entity) {
-        return findId(QUERY_FIND, COLUMN_KEY, preparedStatement -> {
-            try {
-                preparedStatement.setString(1, entity.getType());
-                preparedStatement.setString(2, entity.getCamp());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        String query = "SELECT * FROM piece WHERE type = ? AND camp = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(
+                     connection, query, entity.getType(), entity.getCamp());
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            validateResultSetExist(resultSet);
+            return resultSet.getInt("piece_id");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean hasData() {
-        return hasData(QUERY_HAS_DATA);
+        String query = "SELECT EXISTS (SELECT 1 FROM piece)";
+        return hasData(query);
     }
 }

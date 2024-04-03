@@ -27,7 +27,7 @@ public class TurnExecutor {
         pieceToMove.move(moveSource, target, piecePosition);
         chessStatus.updateStatus(piecePosition);
         changeTurn();
-        return new TurnResult(target, pieceToMove);
+        return new TurnResult(moveSource, target, pieceToMove);
     }
 
     public Map<Position, Piece> requestPiecePosition() {

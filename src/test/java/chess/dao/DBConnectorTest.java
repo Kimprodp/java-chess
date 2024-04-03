@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class DBConnectorTest {
 
-    DBConnector dbConnector = new DBConnector();
+    DBConnector dbConnector = DBConnector.getInstance();
 
     @Test
     public void connection() {

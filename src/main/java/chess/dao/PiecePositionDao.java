@@ -3,27 +3,18 @@ package chess.dao;
 import chess.entity.PieceEntity;
 import chess.entity.PiecePositionEntryEntity;
 import chess.entity.PositionEntity;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class PiecePositionDao extends DaoTemplate {
+public final class PiecePositionDao extends DaoTemplate<Map<PositionEntity, PieceEntity>> {
 
     private static final PiecePositionDao INSTANCE = new PiecePositionDao();
 
-    private static final String QUERY_ADD_PIECE_POSITION = "INSERT INTO piece_position VALUES(0)";
-    private static final String QUERY_ADD_PIECE_POSITION_ENTRY = "INSERT INTO piece_position_entry VALUES(?, ?, ?)";
-    private static final String QUERY_FIND_BY_ID = "SELECT * FROM piece_position_entry WHERE piece_position_id = ?";
-    private static final String QUERY_HAS_DATA_BY_ID = "SELECT EXISTS (SELECT 1 FROM piece_position_entry WHERE position_id = ?)";
-    private static final String QUERY_UPDATE_STATUS = "UPDATE piece_position_entry SET piece_id = ? WHERE piece_position_id = ? AND position_id = ?";
-    private static final String QUERY_DELETE_BY_PIECE = "DELETE FROM piece_position_entry WHERE piece_position_id = ? AND piece_id = ?";
-    private static final String QUERY_TRUNCATE_TABLE_PIECE_POSITION = "TRUNCATE TABLE piece_position_entry";
-    private static final String QUERY_TRUNCATE_TABLE_PIECE_POSITION_ENTRY = "TRUNCATE TABLE piece_position_entry";
-    private static final String QUERY_DELETE_FOREIGN_KEY_CONSTRAINT = "ALTER TABLE piece_position_entry DROP FOREIGN KEY piece_position_entry_ibfk_1";
-    private static final String QUERY_ADD_FOREIGN_KEY_CONSTRAINT = "ALTER TABLE piece_position_entry\n"
-            + "ADD CONSTRAINT piece_position_entry_ibfk_1 FOREIGN KEY (position_id) REFERENCES `position`(position_id)";
-
+    private final ChessGameDao chessGameDao = ChessGameDao.getInstance();
     private final PositionDao positionDao = PositionDao.getInstance();
     private final PieceDao pieceDao = PieceDao.getInstance();
 
@@ -34,25 +25,34 @@ public final class PiecePositionDao extends DaoTemplate {
         return INSTANCE;
     }
 
+
     public int add() {
-        return add(QUERY_ADD_PIECE_POSITION);
+        String query = "INSERT INTO piece_position VALUES(0)";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query)) {
+            preparedStatement.executeUpdate();
+            return getGeneratedKeys(preparedStatement);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addEntry(PiecePositionEntryEntity entity) {
-        add(QUERY_ADD_PIECE_POSITION_ENTRY, preparedStatement -> {
-            try {
-                preparedStatement.setInt(1, entity.pieceId());
-                preparedStatement.setInt(2, entity.piecePositionId());
-                preparedStatement.setInt(3, entity.positionId());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        String query = "INSERT INTO piece_position_entry VALUES(?, ?, ?)";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query, entity.piecePositionId(),
+                     entity.positionId(), entity.pieceId())) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Map<PositionEntity, PieceEntity> findEntryByPiecePositionId(int piecePositionId) {
-        try (ResultSet resultSet = findById(QUERY_FIND_BY_ID, piecePositionId)) {
-            validateResultSetExist(resultSet);
+        String query = "SELECT * FROM piece_position_entry WHERE piece_position_id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query, piecePositionId);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             return createEntry(resultSet, piecePositionId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -60,46 +60,58 @@ public final class PiecePositionDao extends DaoTemplate {
     }
 
     public boolean hasEntryDataByPositionId(int positionId) {
-        return hasDataById(QUERY_HAS_DATA_BY_ID, positionId);
+        String query = "SELECT EXISTS (SELECT 1 FROM piece_position_entry WHERE position_id = ?)";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query, positionId);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            return hasResultExist(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void updateEntry(PiecePositionEntryEntity entity) {
-        executeUpdate(QUERY_UPDATE_STATUS, preparedStatement -> {
-            try {
-                preparedStatement.setInt(1, entity.pieceId());
-                preparedStatement.setInt(2, entity.piecePositionId());
-                preparedStatement.setInt(3, entity.positionId());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        String query = "UPDATE piece_position_entry SET piece_id = ? WHERE piece_position_id = ? AND position_id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query, entity.pieceId(),
+                     entity.piecePositionId(), entity.positionId())) {
+            int numberOfProcessedRows = preparedStatement.executeUpdate();
+            validateProcessedRows(numberOfProcessedRows);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void deleteEntryByPiece(int piecePositionId, int pieceId) {
-        executeUpdate(QUERY_DELETE_BY_PIECE, preparedStatement -> {
-            try {
-                preparedStatement.setInt(1, piecePositionId);
-                preparedStatement.setInt(2, pieceId);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
+    public void deleteEntryByPiece(PiecePositionEntryEntity entity) {
+        String query = "DELETE FROM piece_position_entry WHERE piece_position_id = ? AND position_id = ? AND piece_id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = preparedStatement(connection, query, entity.piecePositionId(), entity.positionId(), entity.pieceId())) {
+            int numberOfProcessedRows = preparedStatement.executeUpdate();
+            validateProcessedRows(numberOfProcessedRows);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void truncateTable() {
-        executeStatement(QUERY_TRUNCATE_TABLE_PIECE_POSITION);
+        String query = "TRUNCATE TABLE piece_position";
+        executeUpdate(query);
     }
 
     public void truncateTableEntry() {
-        executeStatement(QUERY_TRUNCATE_TABLE_PIECE_POSITION_ENTRY);
+        String query = "TRUNCATE TABLE piece_position_entry";
+        executeUpdate(query);
     }
 
     public void deleteForeignKeyConstraint() {
-        executeStatement(QUERY_DELETE_FOREIGN_KEY_CONSTRAINT);
+        String query = "ALTER TABLE piece_position_entry DROP FOREIGN KEY piece_position_entry_ibfk_1";
+        executeUpdate(query);
     }
 
     public void addForeignKeyConstraint() {
-        executeStatement(QUERY_ADD_FOREIGN_KEY_CONSTRAINT);
+        String query = "ALTER TABLE piece_position_entry\n"
+                + "ADD CONSTRAINT piece_position_entry_ibfk_1 FOREIGN KEY (position_id) REFERENCES `position`(position_id)";
+        executeUpdate(query);
     }
 
     private Map<PositionEntity, PieceEntity> createEntry(ResultSet resultSet, int piecePositionId) throws SQLException {

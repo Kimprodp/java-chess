@@ -5,9 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.function.Consumer;
 
-public abstract sealed class DaoTemplate
+public abstract sealed class DaoTemplate<T>
         permits ChessGameDao, PiecePositionDao, PieceDao, PositionDao {
 
     private final DBConnector dbConnector = DBConnector.getInstance();
@@ -15,119 +14,71 @@ public abstract sealed class DaoTemplate
     protected DaoTemplate() {
     }
 
-    protected int add(String query, Consumer<PreparedStatement> statementSetter) {
-        try (PreparedStatement preparedStatement = getPreparedStatementContainGeneratedKey(query)) {
-            statementSetter.accept(preparedStatement);
-            preparedStatement.executeUpdate();
+    protected Connection getConnection() {
+        return dbConnector.getConnection();
+    }
 
-            try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                validateResultSetExist(resultSet);
-                return resultSet.getInt(1);
+    protected PreparedStatement preparedStatement(Connection connection, String query, Object... params)
+            throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        setParameters(preparedStatement, params);
+        return preparedStatement;
+    }
 
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    protected PreparedStatement preparedStatement(Connection connection, String query) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        return preparedStatement;
+    }
+
+    protected void setParameters(PreparedStatement preparedStatement, Object... params) throws SQLException {
+        for (int i = 0; i < params.length; i++) {
+            preparedStatement.setObject(i + 1, params[i]);
         }
     }
 
-    protected int add(String query) {
-        try (PreparedStatement preparedStatement = getPreparedStatementContainGeneratedKey(query);
-             ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-            validateResultSetExist(resultSet);
-            return resultSet.getInt(1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected ResultSet findById(String query, int id) {
-        try (PreparedStatement preparedStatement = getPreparedStatement(query)) {
-            preparedStatement.setInt(1, id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                validateResultSetExist(resultSet);
-                return resultSet;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected int findId(String query, String columnName, Consumer<PreparedStatement> statementSetter) {
-        try (PreparedStatement preparedStatement = getPreparedStatement(query)) {
-            statementSetter.accept(preparedStatement);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                validateResultSetExist(resultSet);
-                return resultSet.getInt(columnName);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    protected int getGeneratedKeys(PreparedStatement preparedStatement) throws SQLException {
+        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+        validateResultSetExist(generatedKeys);
+        return generatedKeys.getInt(1);
     }
 
     protected boolean hasData(String query) {
-        try (ResultSet resultSet = createResultSetByStatement(query)) {
+        try (Connection connection = getConnection();
+             ResultSet resultSet = executeQueryByStatement(connection, query)) {
             return hasResultExist(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    protected boolean hasDataById(String query, int id) {
-        try (PreparedStatement preparedStatement = getPreparedStatement(query)) {
-            preparedStatement.setInt(1, id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return hasResultExist(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected void executeUpdate(String query, Consumer<PreparedStatement> statementSetter) {
-        try (PreparedStatement preparedStatement = getPreparedStatement(query)) {
-            statementSetter.accept(preparedStatement);
-            int numberOfProcessedRows = preparedStatement.executeUpdate();
-            validateProcessedRows(numberOfProcessedRows);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected void executeStatement(String query) {
-        try (Statement statement = getStatement()) {
+    protected void executeUpdate(String query) {
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
             statement.executeUpdate(query);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    protected Connection getConnection() {
-        return dbConnector.getConnection();
+    protected ResultSet executeQueryByStatement(Connection connection, String query) throws SQLException {
+        Statement statement = connection.createStatement();
+        return statement.executeQuery(query);
     }
 
+
     protected PreparedStatement getPreparedStatement(String query) throws SQLException {
-        try (Connection connection = getConnection()) {
-            return connection.prepareStatement(query);
-        }
+        Connection connection = getConnection();
+        return connection.prepareStatement(query);
     }
 
     protected PreparedStatement getPreparedStatementContainGeneratedKey(String query) throws SQLException {
-        try (Connection connection = getConnection()) {
-            return connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        }
+        Connection connection = getConnection();
+        return connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
     }
 
     protected Statement getStatement() throws SQLException {
-        try (Connection connection = getConnection()) {
-            return connection.createStatement();
-        }
-    }
-
-    protected ResultSet createResultSetByStatement(String query) throws SQLException {
-        try (Connection connection = getConnection();
-             Statement statement = connection.createStatement()) {
-            return statement.executeQuery(query);
-        }
+        Connection connection = getConnection();
+        return connection.createStatement();
     }
 
     protected boolean hasResultExist(ResultSet resultSet) throws SQLException {
