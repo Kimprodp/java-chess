@@ -3,7 +3,7 @@ package chess.domain.game;
 import chess.domain.piece.Camp;
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
-import chess.dto.PiecePositionDto;
+import java.util.Map;
 
 public class TurnExecutor {
 
@@ -15,18 +15,18 @@ public class TurnExecutor {
         this.turnToMove = turnToMove;
     }
 
-    public PiecePositionDto execute(Position moveSource, Position target, ChessStatus chessStatus) {
+    public TurnResult execute(Position moveSource, Position target, ChessStatus chessStatus) {
         validatePieceExistsOnSquare(moveSource);
         Piece pieceToMove = piecePosition.findChessPieceOnPosition(moveSource);
         validateTurnSide(pieceToMove);
         pieceToMove.move(moveSource, target, piecePosition);
         chessStatus.updateStatus(piecePosition);
         changeTurn();
-        return piecePosition.createDto();
+        return new TurnResult(target, pieceToMove);
     }
 
-    public PiecePositionDto requestPiecePosition() {
-        return piecePosition.createDto();
+    public Map<Position, Piece> requestPiecePosition() {
+        return piecePosition.getPiecePosition();
     }
 
     private void changeTurn() {

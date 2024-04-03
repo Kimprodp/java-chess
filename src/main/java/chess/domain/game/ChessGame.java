@@ -1,9 +1,10 @@
 package chess.domain.game;
 
 import chess.domain.piece.Camp;
+import chess.domain.piece.Piece;
 import chess.domain.position.Position;
 import chess.dto.ChessStatusDto;
-import chess.dto.PiecePositionDto;
+import java.util.Map;
 
 public class ChessGame {
 
@@ -15,12 +16,12 @@ public class ChessGame {
         this.chessStatus = chessStatus;
     }
 
-    public PiecePositionDto executeTurn(Position moveSource, Position target) {
+    public TurnResult executeTurn(Position moveSource, Position target) {
         validateGameInProgress();
         return turnExecutor.execute(moveSource, target, chessStatus);
     }
 
-    public PiecePositionDto requestPiecePosition() {
+    public Map<Position, Piece> requestPiecePosition() {
         return turnExecutor.requestPiecePosition();
     }
 
