@@ -8,12 +8,11 @@ import static chess.domain.TestSetting.ROOK_BLACK;
 import static chess.domain.TestSetting.ROOK_WHITE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import chess.domain.piece.Camp;
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
-import chess.dto.PieceDto;
-import chess.dto.PiecePositionDto;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,15 +39,16 @@ class TurnExecutorTest {
     @Test
     void 턴을_실행하면_실행_결과를_반환() {
         //given, when
-        PiecePositionDto executeResult = turnExecutor.execute(D2, D3, chessStatus);
+        TurnResult turnResult = turnExecutor.execute(D2, D3, chessStatus);
 
         //then
-        Map<Position, PieceDto> positionResult = executeResult.piecePosition();
-        PieceDto witheRook = positionResult.get(D3);
+        Piece movedPiece = turnResult.movedPiece();
+        Position target = turnResult.target();
 
-        assertThat(positionResult)
-                .hasSize(1)
-                .containsEntry(D3, witheRook);
+        assertAll(
+                () -> assertThat(movedPiece).isEqualTo(ROOK_WHITE),
+                () -> assertThat(target).isEqualTo(D3)
+        );
     }
 
     @Test

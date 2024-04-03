@@ -3,7 +3,6 @@ package chess.service;
 import chess.dao.PieceDao;
 import chess.dao.PositionDao;
 import chess.domain.piece.Camp;
-import chess.domain.piece.Piece;
 import chess.domain.piece.PieceType;
 import chess.domain.position.BoardPosition;
 import chess.domain.position.Lettering;
@@ -26,22 +25,6 @@ public class ChessDataInitializer {
 
     public static ChessDataInitializer getInstance() {
         return INSTANCE;
-    }
-
-    public Position findPosition(Lettering lettering, Numbering numbering) {
-        PositionEntity positionEntity = positionDao.find(new PositionEntity(lettering, numbering));
-        return new Position(
-                Lettering.valueOf(positionEntity.getLettering()),
-                Numbering.valueOf(positionEntity.getNumbering())
-        );
-    }
-
-    public Piece findPiece(PieceType pieceType, Camp camp) {
-        PieceEntity pieceEntity = pieceDao.find(new PieceEntity(pieceType, camp));
-        return new Piece(
-                PieceType.valueOf(pieceEntity.getType()),
-                Camp.valueOf(pieceEntity.getCamp())
-        );
     }
 
     private void registerChessResource() {

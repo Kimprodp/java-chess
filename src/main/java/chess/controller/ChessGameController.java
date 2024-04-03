@@ -71,7 +71,7 @@ public class ChessGameController {
 
     private InProgressGameInfo createLoadGame() {
         ChessGameEntity chessGameData = gameSaveManager.loadLastGame();
-        Camp turnToMove = Camp.getByOrdinal(chessGameData.getStatus_value());
+        Camp turnToMove = Camp.getByOrdinal(chessGameData.getStatusValue());
         Map<PositionEntity, PieceEntity> piecePositionData = gameSaveManager.loadPiecePositionByGame(chessGameData);
         PiecePosition piecePosition = createPiecePosition(piecePositionData);
         ChessGame chessGame = createChessGame(piecePosition, turnToMove);
@@ -117,7 +117,7 @@ public class ChessGameController {
             Position moveSource = BoardPosition.findPosition(moveSourceDto.lettering(), moveSourceDto.numbering());
             Position target = BoardPosition.findPosition(targetDto.lettering(), targetDto.numbering());
             TurnResult turnResult = chessGame.executeTurn(moveSource, target);
-            gameSaveManager.saveProgressGame(inProgressGameInfo.chessGameData(), turnResult);
+            gameSaveManager.saveProgressGame(inProgressGameInfo, turnResult);
             showChess(chessGame);
         }
     }
