@@ -4,12 +4,9 @@ import chess.domain.piece.Camp;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceType;
 import chess.domain.position.Position;
-import chess.dto.PieceDto;
-import chess.dto.PiecePositionDto;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 public class PiecePosition {
 
@@ -54,13 +51,7 @@ public class PiecePosition {
         return piecePosition.containsKey(position);
     }
 
-    public PiecePositionDto createDto() {
-        Map<Position, PieceDto> collect = piecePosition.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Entry::getKey,
-                        entry -> entry.getValue().createDto()
-                ));
-
-        return new PiecePositionDto(collect);
+    public Map<Position, Piece> getPiecePosition() {
+        return new HashMap<>(piecePosition);
     }
 }

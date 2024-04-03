@@ -2,7 +2,6 @@ package chess.domain.piece;
 
 import chess.domain.game.PiecePosition;
 import chess.domain.position.Position;
-import chess.dto.PieceDto;
 import java.util.Set;
 
 public class Piece {
@@ -27,10 +26,6 @@ public class Piece {
         if (piecePosition.findChessPieceOnPosition(startPosition) != this) {
             throw new IllegalArgumentException("[ERROR] 현재 말이 시작 위치에 있지 않습니다. : " + this + startPosition);
         }
-    }
-
-    public PieceDto createDto() {
-        return new PieceDto(pieceType, camp);
     }
 
     public PieceType getPieceType() {
