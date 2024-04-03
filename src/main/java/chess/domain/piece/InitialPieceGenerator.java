@@ -1,6 +1,5 @@
 package chess.domain.piece;
 
-import chess.service.ChessDataInitializer;
 import chess.domain.position.Position;
 
 public class InitialPieceGenerator {
@@ -18,10 +17,8 @@ public class InitialPieceGenerator {
     }
 
     public Piece generate(Position position) {
-        ChessDataInitializer chessDataInitializer = ChessDataInitializer.getInstance();
-
         PieceType pieceType = pieceTypeDeterminer.determine(position);
         Camp camp = pieceCampDeterminer.determineCamp(position.getNumbering());
-        return chessDataInitializer.findPiece(pieceType, camp);
+        return new Piece(pieceType, camp);
     }
 }
