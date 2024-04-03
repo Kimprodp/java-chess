@@ -10,6 +10,11 @@ public class TurnExecutor {
     private final PiecePosition piecePosition;
     private Camp turnToMove;
 
+    public TurnExecutor(PiecePosition piecePosition) {
+        this.piecePosition = piecePosition;
+        this.turnToMove = Camp.WHITE;
+    }
+
     public TurnExecutor(PiecePosition piecePosition, Camp turnToMove) {
         this.piecePosition = piecePosition;
         this.turnToMove = turnToMove;
