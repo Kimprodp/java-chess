@@ -8,7 +8,8 @@ public enum CommandType {
     LOAD_GAME("load"),
     END("end"),
     MOVE("move"),
-    STATUS("status");
+    STATUS("status"),
+    ;
 
     private final String name;
 

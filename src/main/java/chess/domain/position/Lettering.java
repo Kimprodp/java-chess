@@ -11,7 +11,8 @@ public enum Lettering {
     E,
     F,
     G,
-    H;
+    H,
+    ;
 
     private static final int FIRST_LETTERING_ORDINAL = 0;
     private static final int LAST_LETTERING_ORDINAL = Lettering.values().length - 1;

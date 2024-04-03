@@ -11,7 +11,8 @@ public enum Numbering {
     FIVE,
     SIX,
     SEVEN,
-    EIGHT;
+    EIGHT,
+    ;
 
     private static final int FIRST_NUMBERING_ORDINAL = 0;
     private static final int LAST_NUMBERING_ORDINAL = Numbering.values().length - 1;

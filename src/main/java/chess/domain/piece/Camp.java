@@ -6,7 +6,8 @@ public enum Camp {
 
     NONE,
     BLACK,
-    WHITE;
+    WHITE,
+    ;
 
     Camp() {
     }
