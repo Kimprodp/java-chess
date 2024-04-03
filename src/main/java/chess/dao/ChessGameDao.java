@@ -1,15 +1,22 @@
 package chess.dao;
 
 import chess.entity.ChessGameEntity;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class ChessGameDao {
+public final class ChessGameDao extends DaoTemplate {
 
     private static final ChessGameDao INSTANCE = new ChessGameDao();
+
+    private static final String QUERY_ADD = "INSERT INTO chess_game VALUES(0, ?, ?)";
+    private static final String QUERY_FIND_BY_ID = "SELECT * FROM chess_game WHERE chess_game_id = ?";
+    private static final String QUERY_FIND_LAST_ID = "SELECT COALESCE(MAX(chess_game_id), 1) AS max_id FROM chess_game";
+    private static final String QUERY_HAS_DATA = "SELECT EXISTS (SELECT 1 FROM chess_game)";
+    private static final String QUERY_UPDATE_STATUS = "UPDATE chess_game SET status_value = ? WHERE chess_game_id = ? AND piece_position_id = ?";
+    private static final String QUERY_TRUNCATE_TABLE = "TRUNCATE TABLE chess_game";
+    private static final String QUERY_DELETE_FOREIGN_KEY_CONSTRAINT = "ALTER TABLE chess_game DROP FOREIGN KEY chess_game_ibfk_1";
+    private static final String QUERY_ADD_FOREIGN_KEY_CONSTRAINT = "ALTER TABLE chess_game\n"
+            + "ADD CONSTRAINT chess_game_ibfk_1 FOREIGN KEY (piece_position_id) REFERENCES piece_position(piece_position_id)";
 
     private ChessGameDao() {
     }
@@ -18,44 +25,20 @@ public class ChessGameDao {
         return INSTANCE;
     }
 
-    public int add(ChessGameEntity chessGameEntity) {
-        String query = "INSERT INTO chess_game VALUES(0, ?, ?)";
-        try (Connection connection = DBConnector.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setInt(1, chessGameEntity.getPiecePositionId());
-            preparedStatement.setInt(2, chessGameEntity.getStatus_value());
-            preparedStatement.executeUpdate();
-
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            validateChessGameExist(generatedKeys);
-            return generatedKeys.getInt(1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public boolean hasData() {
-        String query = "SELECT EXISTS (SELECT 1 FROM chess_game)";
-        try (Connection connection = DBConnector.getConnection();
-             Statement statement = connection.createStatement();) {
-            ResultSet resultSet = statement.executeQuery(query);
-            if (resultSet.next()) {
-                return resultSet.getBoolean(1);
+    public int add(ChessGameEntity entity) {
+        return add(QUERY_ADD, preparedStatement -> {
+            try {
+                preparedStatement.setInt(1, entity.getPiecePositionId());
+                preparedStatement.setInt(2, entity.getStatusValue());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-            return false;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        });
     }
 
     public ChessGameEntity findById(int chessGameId) {
-        String query = "SELECT * FROM chess_game WHERE chess_game_id = ?";
-        try (Connection connection = DBConnector.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, chessGameId);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            validateChessGameExist(resultSet);
+        try (ResultSet resultSet = findById(QUERY_FIND_BY_ID, chessGameId)) {
+            validateResultSetExist(resultSet);
             return new ChessGameEntity(
                     resultSet.getInt("chess_game_id"),
                     resultSet.getInt("piece_position_id"),
@@ -67,71 +50,39 @@ public class ChessGameDao {
     }
 
     public int findLastID() {
-        String query = "SELECT COALESCE(MAX(chess_game_id), 0) AS max_id FROM chess_game";
-        try (Connection connection = DBConnector.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(query);
-            validateChessGameExist(resultSet);
+        try (ResultSet resultSet = createResultSetByStatement(QUERY_FIND_LAST_ID)) {
+            validateResultSetExist(resultSet);
             return resultSet.getInt("max_id");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void updateStatus(ChessGameEntity chessGameEntity) {
-        String query = "UPDATE chess_game SET status_value = ? WHERE chess_game_id = ? AND piece_position_id = ?";
-        try (Connection connection = DBConnector.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, chessGameEntity.getStatus_value());
-            preparedStatement.setInt(2, chessGameEntity.getChessGameId());
-            preparedStatement.setInt(3, chessGameEntity.getPiecePositionId());
-            int numberOfUpdateRows = preparedStatement.executeUpdate();
-            validateUpdateSuccess(numberOfUpdateRows);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public boolean hasData() {
+        return hasData(QUERY_HAS_DATA);
+    }
+
+    public void updateStatus(ChessGameEntity entity) {
+        executeUpdate(QUERY_UPDATE_STATUS, preparedStatement -> {
+            try {
+                preparedStatement.setInt(1, entity.getStatusValue());
+                preparedStatement.setInt(2, entity.getChessGameId());
+                preparedStatement.setInt(3, entity.getPiecePositionId());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void truncateTable() {
-        String query = "TRUNCATE TABLE chess_game";
-        try (Connection connection = DBConnector.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        executeStatement(QUERY_TRUNCATE_TABLE);
     }
 
     public void deleteForeignKeyConstraint() {
-        String query = "ALTER TABLE chess_game DROP FOREIGN KEY chess_game_ibfk_1";
-        try (Connection connection = DBConnector.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        executeStatement(QUERY_DELETE_FOREIGN_KEY_CONSTRAINT);
     }
 
     public void addForeignKeyConstraint() {
-        String query = "ALTER TABLE chess_game\n"
-                + "ADD CONSTRAINT chess_game_ibfk_1 FOREIGN KEY (piece_position_id) REFERENCES piece_position(piece_position_id)";
-        try (Connection connection = DBConnector.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void validateChessGameExist(ResultSet resultSet) throws SQLException {
-        if (!resultSet.next()) {
-            throw new IllegalArgumentException("[ERROR] 불러올 게임이 없습니다.");
-        }
-    }
-
-    private void validateUpdateSuccess(int numberOfUpdateRows) {
-        if (numberOfUpdateRows != 1) {
-            throw new IllegalArgumentException("[ERROR] 업데이트가 정상적으로 처리되지 않았습니다.");
-        }
+        executeStatement(QUERY_ADD_FOREIGN_KEY_CONSTRAINT);
     }
 }

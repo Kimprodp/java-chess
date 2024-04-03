@@ -6,13 +6,22 @@ import java.sql.SQLException;
 
 public class DBConnector {
 
+    private static final DBConnector INSTANCE = new DBConnector();
+
     private static final String SERVER = "localhost:13306";
     private static final String DATABASE = "chess";
     private static final String OPTION = "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
 
-    public static Connection getConnection() {
+    private DBConnector() {
+    }
+
+    public static DBConnector getInstance() {
+        return INSTANCE;
+    }
+
+    public Connection getConnection() {
         try {
             return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME, PASSWORD);
         } catch (SQLException e) {

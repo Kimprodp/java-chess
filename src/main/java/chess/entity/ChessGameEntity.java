@@ -6,12 +6,12 @@ public class ChessGameEntity {
 
     private final int chessGameId;
     private final int piecePositionId;
-    private final int status_value;
+    private final int statusValue;
 
-    public ChessGameEntity(int chessGameId, int piecePositionId, int status_value) {
+    public ChessGameEntity(int chessGameId, int piecePositionId, int statusValue) {
         this.chessGameId = chessGameId;
         this.piecePositionId = piecePositionId;
-        this.status_value = status_value;
+        this.statusValue = statusValue;
     }
 
     public ChessGameEntity(int chessGameId, int piecePositionId, Camp turnToMove) {
@@ -26,7 +26,7 @@ public class ChessGameEntity {
         return piecePositionId;
     }
 
-    public int getStatus_value() {
-        return status_value;
+    public int getStatusValue() {
+        return statusValue;
     }
 }
