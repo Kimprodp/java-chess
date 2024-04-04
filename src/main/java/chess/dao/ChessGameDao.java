@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public final class ChessGameDao extends DaoTemplate<ChessGameEntity> {
 
@@ -21,7 +20,8 @@ public final class ChessGameDao extends DaoTemplate<ChessGameEntity> {
     public int add(ChessGameEntity entity) {
         String query = "INSERT INTO chess_game VALUES(0, ?, ?)";
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = preparedStatement(connection, query, entity.getPiecePositionId(), entity.getStatusValue())) {
+             PreparedStatement preparedStatement = preparedStatement(connection, query, entity.getPiecePositionId(),
+                     entity.getStatusValue())) {
             preparedStatement.executeUpdate();
             return getGeneratedKeys(preparedStatement);
         } catch (SQLException e) {
