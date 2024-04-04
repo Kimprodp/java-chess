@@ -12,26 +12,25 @@ import chess.domain.position.Lettering;
 import chess.domain.position.Position;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public enum PieceType {
 
-    KING(KingMoveStrategy::getInstance, 0.0),
-    QUEEN(QueenMoveStrategy::getInstance, 9.0),
-    ROOK(RookMoveStrategy::getInstance, 5.0),
-    BISHOP(BishopMoveStrategy::getInstance, 3.0),
-    KNIGHT(KnightMoveStrategy::getInstance, 2.5),
-    PAWN(PawnMoveStrategy::getInstance, 1.0);
+    KING(KingMoveStrategy.getInstance(), 0.0),
+    QUEEN(QueenMoveStrategy.getInstance(), 9.0),
+    ROOK(RookMoveStrategy.getInstance(), 5.0),
+    BISHOP(BishopMoveStrategy.getInstance(), 3.0),
+    KNIGHT(KnightMoveStrategy.getInstance(), 2.5),
+    PAWN(PawnMoveStrategy.getInstance(), 1.0);
 
     private static final double DEFAULT_SCORE = 0.0;
     private static final double VERTICAL_DUPLICATE_PAWN_SCORE = 0.5;
     private static final int DUPLICATE_SCORE_CRITERIA = 1;
 
-    private final Supplier<MoveStrategy> moveStrategySupplier;
+    private final MoveStrategy moveStrategy;
     private final double score;
 
-    PieceType(Supplier<MoveStrategy> moveStrategySupplier, double score) {
-        this.moveStrategySupplier = moveStrategySupplier;
+    PieceType(MoveStrategy moveStrategy, double score) {
+        this.moveStrategy = moveStrategy;
         this.score = score;
     }
 
@@ -91,7 +90,6 @@ public enum PieceType {
     }
 
     public Set<Position> executeMoveStrategy(Position standardPosition, PiecePosition piecePosition) {
-        MoveStrategy moveStrategy = moveStrategySupplier.get();
         return moveStrategy.move(standardPosition, piecePosition);
     }
 
