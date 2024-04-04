@@ -14,7 +14,6 @@ public final class PiecePositionDao extends DaoTemplate {
 
     private static final PiecePositionDao INSTANCE = new PiecePositionDao();
 
-    private final ChessGameDao chessGameDao = ChessGameDao.getInstance();
     private final PositionDao positionDao = PositionDao.getInstance();
     private final PieceDao pieceDao = PieceDao.getInstance();
 
@@ -85,7 +84,8 @@ public final class PiecePositionDao extends DaoTemplate {
     public void deleteEntryByPiece(PiecePositionEntryEntity entity) {
         String query = "DELETE FROM piece_position_entry WHERE piece_position_id = ? AND position_id = ? AND piece_id = ?";
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = preparedStatement(connection, query, entity.piecePositionId(), entity.positionId(), entity.pieceId())) {
+             PreparedStatement preparedStatement = preparedStatement(connection, query, entity.piecePositionId(),
+                     entity.positionId(), entity.pieceId())) {
             int numberOfProcessedRows = preparedStatement.executeUpdate();
             validateProcessedRows(numberOfProcessedRows);
         } catch (SQLException e) {
