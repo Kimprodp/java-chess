@@ -54,7 +54,7 @@ public final class PieceDao extends DaoTemplate {
 
     public boolean hasData() {
         String query = "SELECT EXISTS (SELECT 1 FROM piece)";
-        return hasData(query);
+        return executeQuery(query);
     }
 
     private PieceEntity mappingResult(ResultSet resultSet) throws SQLException {

@@ -42,7 +42,7 @@ public abstract sealed class DaoTemplate
         return generatedKeys.getInt(1);
     }
 
-    protected boolean hasData(String query) {
+    protected boolean executeQuery(String query) {
         try (Connection connection = getConnection();
              ResultSet resultSet = executeQueryByStatement(connection, query)) {
             return hasResultExist(resultSet);

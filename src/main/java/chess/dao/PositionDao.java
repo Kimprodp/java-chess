@@ -54,7 +54,7 @@ public final class PositionDao extends DaoTemplate {
 
     public boolean hasData() {
         String query = "SELECT EXISTS (SELECT 1 FROM position)";
-        return hasData(query);
+        return executeQuery(query);
     }
 
     private PositionEntity mappingResult(ResultSet resultSet) throws SQLException {

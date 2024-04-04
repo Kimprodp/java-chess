@@ -53,7 +53,7 @@ public final class ChessGameDao extends DaoTemplate {
 
     public boolean hasData() {
         String query = "SELECT EXISTS (SELECT 1 FROM chess_game)";
-        return hasData(query);
+        return executeQuery(query);
     }
 
     public void updateStatus(ChessGameEntity entity) {
