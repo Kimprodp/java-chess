@@ -14,9 +14,9 @@ class NumberingTest {
     @Test
     void 다음_순서의_넘버링을_조회_가능한지_확인() {
         //given, when
-        boolean expectedTrue1 = Numbering.canFindNextNumbering(Numbering.SEVEN);
-        boolean expectedTrue2 = Numbering.canFindNextNumbering(Numbering.SIX, 2);
-        boolean expectedFalse = Numbering.canFindNextNumbering(Numbering.EIGHT);
+        boolean expectedTrue1 = Numbering.SEVEN.canFindNextNumbering();
+        boolean expectedTrue2 = Numbering.SIX.canFindNextNumbering(2);
+        boolean expectedFalse = Numbering.EIGHT.canFindNextNumbering();
 
         //then
         assertAll(
@@ -29,9 +29,9 @@ class NumberingTest {
     @Test
     void 이전_순서의_넘버링을_조회_가능한지_확인() {
         //given, when
-        boolean expectedTrue1 = Numbering.canFindPreviousNumbering(Numbering.TWO);
-        boolean expectedTrue2 = Numbering.canFindPreviousNumbering(Numbering.THREE, 2);
-        boolean expectedFalse = Numbering.canFindPreviousNumbering(Numbering.ONE);
+        boolean expectedTrue1 = Numbering.TWO.canFindPreviousNumbering();
+        boolean expectedTrue2 = Numbering.THREE.canFindPreviousNumbering(2);
+        boolean expectedFalse = Numbering.ONE.canFindPreviousNumbering();
 
         //then
         assertAll(
@@ -44,8 +44,8 @@ class NumberingTest {
     @Test
     void 다음_순서의_넘버링을_반환() {
         //given, when
-        Numbering nextNumbering1 = Numbering.findNextNumbering(Numbering.ONE);
-        Numbering nextNumbering2 = Numbering.findNextNumbering(Numbering.ONE, 2);
+        Numbering nextNumbering1 = Numbering.ONE.findNextNumbering();
+        Numbering nextNumbering2 = Numbering.ONE.findNextNumbering(2);
 
         //then
         assertAll(
@@ -58,9 +58,9 @@ class NumberingTest {
     void 다음_순서의_넘버링을_반환할떄_마지막_넘버링을_초과하는_경우_예외발생() {
         //given, when, then
         assertAll(
-                () -> assertThatThrownBy(() -> Numbering.findNextNumbering(Numbering.EIGHT))
+                () -> assertThatThrownBy(() -> Numbering.EIGHT.findNextNumbering())
                         .isInstanceOf(IllegalArgumentException.class),
-                () -> assertThatThrownBy(() -> Numbering.findNextNumbering(Numbering.SEVEN, 2))
+                () -> assertThatThrownBy(() -> Numbering.SEVEN.findNextNumbering(2))
                         .isInstanceOf(IllegalArgumentException.class)
 
         );
@@ -69,8 +69,8 @@ class NumberingTest {
     @Test
     void 이전_순서의_넘버링을_반환() {
         //given, when
-        Numbering previousNumbering1 = Numbering.findPreviousNumbering(Numbering.TWO);
-        Numbering previousNumbering2 = Numbering.findPreviousNumbering(Numbering.THREE, 2);
+        Numbering previousNumbering1 = Numbering.TWO.findPreviousNumbering();
+        Numbering previousNumbering2 = Numbering.THREE.findPreviousNumbering(2);
 
         //then
         assertAll(
@@ -83,9 +83,9 @@ class NumberingTest {
     void 이전_순서의_넘버링을_반환할떄_첫번째_넘버링보다_작을_경우_예외발생() {
         //given, when, then
         assertAll(
-                () -> assertThatThrownBy(() -> Numbering.findPreviousNumbering(Numbering.ONE))
+                () -> assertThatThrownBy(() -> Numbering.ONE.findPreviousNumbering())
                         .isInstanceOf(IllegalArgumentException.class),
-                () -> assertThatThrownBy(() -> Numbering.findPreviousNumbering(Numbering.TWO, 2))
+                () -> assertThatThrownBy(() -> Numbering.TWO.findPreviousNumbering(2))
                         .isInstanceOf(IllegalArgumentException.class)
         );
     }

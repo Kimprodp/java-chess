@@ -20,63 +20,59 @@ public enum Numbering {
     Numbering() {
     }
 
-    public static boolean canFindNextNumbering(Numbering numbering) {
-        return numbering.ordinal() < LAST_NUMBERING_ORDINAL;
+    public boolean canFindNextNumbering() {
+        return ordinal() < LAST_NUMBERING_ORDINAL;
     }
 
-    public static boolean canFindNextNumbering(Numbering numbering, int count) {
-        return numbering.ordinal() + count <= LAST_NUMBERING_ORDINAL;
+    public boolean canFindNextNumbering(int count) {
+        return ordinal() + count <= LAST_NUMBERING_ORDINAL;
     }
 
-    public static boolean canFindPreviousNumbering(Numbering numbering) {
-        return numbering.ordinal() > FIRST_NUMBERING_ORDINAL;
+    public boolean canFindPreviousNumbering() {
+        return ordinal() > FIRST_NUMBERING_ORDINAL;
     }
 
-    public static boolean canFindPreviousNumbering(Numbering numbering, int count) {
-        return numbering.ordinal() - count >= FIRST_NUMBERING_ORDINAL;
+    public boolean canFindPreviousNumbering(int count) {
+        return ordinal() - count >= FIRST_NUMBERING_ORDINAL;
     }
 
-    public static Numbering findNextNumbering(Numbering numbering) {
-        if (!canFindNextNumbering(numbering)) {
-            String errorMessage = String.format("[ERROR] %s는 마지막 Numbering 입니다.", numbering);
-            throw new IllegalArgumentException(errorMessage);
+    public Numbering findNextNumbering() {
+        if (!canFindNextNumbering()) {
+            throw new IllegalArgumentException("[ERROR] %s는 마지막 Numbering 입니다.");
         }
 
-        int targetOrdinal = numbering.ordinal() + 1;
+        int targetOrdinal = ordinal() + 1;
         return findNumbering(targetOrdinal);
     }
 
-    public static Numbering findNextNumbering(Numbering numbering, int count) {
-        if (!canFindNextNumbering(numbering, count)) {
-            String errorMessage = String.format("[ERROR] numbering 범위를 초과합니다. : %s, %d", numbering, count);
-            throw new IllegalArgumentException(errorMessage);
+    public Numbering findNextNumbering(int count) {
+        if (!canFindNextNumbering(count)) {
+            throw new IllegalArgumentException("[ERROR] numbering 범위를 초과합니다.");
         }
 
-        int targetOrdinal = numbering.ordinal() + count;
+        int targetOrdinal = ordinal() + count;
         return findNumbering(targetOrdinal);
     }
 
-    public static Numbering findPreviousNumbering(Numbering numbering) {
-        if (!canFindPreviousNumbering(numbering)) {
-            String errorMessage = String.format("[ERROR] %s는 처음 Numbering 입니다.", numbering);
-            throw new IllegalArgumentException(errorMessage);
+    public Numbering findPreviousNumbering() {
+        if (!canFindPreviousNumbering()) {
+            throw new IllegalArgumentException("[ERROR] %s는 처음 Numbering 입니다.");
         }
 
-        int targetOrdinal = numbering.ordinal() - 1;
+        int targetOrdinal = ordinal() - 1;
         return findNumbering(targetOrdinal);
     }
 
-    public static Numbering findPreviousNumbering(Numbering numbering, int count) {
-        if (!canFindPreviousNumbering(numbering, count)) {
-            String errorMessage = String.format("[ERROR] numbering 범위 보다 작습니다. : %s, %d", numbering, count);
-            throw new IllegalArgumentException(errorMessage);
+    public Numbering findPreviousNumbering(int count) {
+        if (!canFindPreviousNumbering(count)) {
+            throw new IllegalArgumentException("[ERROR] numbering 범위 보다 작습니다.");
         }
 
-        int targetOrdinal = numbering.ordinal() - count;
+        int targetOrdinal = ordinal() - count;
         return findNumbering(targetOrdinal);
     }
 
-    private static Numbering findNumbering(int targetOrdinal) {
+    private Numbering findNumbering(int targetOrdinal) {
         return Arrays.stream(Numbering.values())
                 .filter(lettering -> lettering.ordinal() == targetOrdinal)
                 .findFirst()
