@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class PieceDao extends DaoTemplate<PieceEntity> {
+public final class PieceDao extends DaoTemplate {
 
     private static final PieceDao INSTANCE = new PieceDao();
 
@@ -39,14 +39,6 @@ public final class PieceDao extends DaoTemplate<PieceEntity> {
         }
     }
 
-    private PieceEntity mappingResult(ResultSet resultSet) throws SQLException {
-        validateResultSetExist(resultSet);
-        return new PieceEntity(
-                resultSet.getString("type"),
-                resultSet.getString("camp")
-        );
-    }
-
     public int findId(PieceEntity entity) {
         String query = "SELECT * FROM piece WHERE type = ? AND camp = ?";
         try (Connection connection = getConnection();
@@ -63,5 +55,13 @@ public final class PieceDao extends DaoTemplate<PieceEntity> {
     public boolean hasData() {
         String query = "SELECT EXISTS (SELECT 1 FROM piece)";
         return hasData(query);
+    }
+
+    private PieceEntity mappingResult(ResultSet resultSet) throws SQLException {
+        validateResultSetExist(resultSet);
+        return new PieceEntity(
+                resultSet.getString("type"),
+                resultSet.getString("camp")
+        );
     }
 }

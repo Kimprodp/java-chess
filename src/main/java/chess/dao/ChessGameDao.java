@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class ChessGameDao extends DaoTemplate<ChessGameEntity> {
+public final class ChessGameDao extends DaoTemplate {
 
     private static final ChessGameDao INSTANCE = new ChessGameDao();
 
@@ -38,15 +38,6 @@ public final class ChessGameDao extends DaoTemplate<ChessGameEntity> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private ChessGameEntity mappingResult(ResultSet resultSet) throws SQLException {
-        validateResultSetExist(resultSet);
-        return new ChessGameEntity(
-                resultSet.getInt("chess_game_id"),
-                resultSet.getInt("piece_position_id"),
-                resultSet.getInt("status_value")
-        );
     }
 
     public int findLastID() {
@@ -87,19 +78,18 @@ public final class ChessGameDao extends DaoTemplate<ChessGameEntity> {
         executeUpdate(query);
     }
 
-//    public void deleteForeignKeyConstraint() {
-//        String query = "ALTER TABLE chess_game DROP FOREIGN KEY chess_game_ibfk_1";
-//        try (Connection connection = getConnection();
-//             Statement statement = connection.createStatement()) {
-//            statement.executeUpdate(query);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
     public void addForeignKeyConstraint() {
         String query = "ALTER TABLE chess_game\n"
                 + "ADD CONSTRAINT chess_game_ibfk_1 FOREIGN KEY (piece_position_id) REFERENCES piece_position(piece_position_id)";
         executeUpdate(query);
+    }
+
+    private ChessGameEntity mappingResult(ResultSet resultSet) throws SQLException {
+        validateResultSetExist(resultSet);
+        return new ChessGameEntity(
+                resultSet.getInt("chess_game_id"),
+                resultSet.getInt("piece_position_id"),
+                resultSet.getInt("status_value")
+        );
     }
 }

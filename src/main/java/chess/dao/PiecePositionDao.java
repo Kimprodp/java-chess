@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class PiecePositionDao extends DaoTemplate<Map<PositionEntity, PieceEntity>> {
+public final class PiecePositionDao extends DaoTemplate {
 
     private static final PiecePositionDao INSTANCE = new PiecePositionDao();
 

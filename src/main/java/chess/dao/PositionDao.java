@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class PositionDao extends DaoTemplate<PositionEntity> {
+public final class PositionDao extends DaoTemplate {
 
     private static final PositionDao INSTANCE = new PositionDao();
 
@@ -39,14 +39,6 @@ public final class PositionDao extends DaoTemplate<PositionEntity> {
         }
     }
 
-    private PositionEntity mappingResult(ResultSet resultSet) throws SQLException {
-        validateResultSetExist(resultSet);
-        return new PositionEntity(
-                resultSet.getString("lettering"),
-                resultSet.getString("numbering")
-        );
-    }
-
     public int findId(PositionEntity entity) {
         String query = "SELECT * FROM position WHERE lettering = ? AND numbering = ?";
         try (Connection connection = getConnection();
@@ -63,5 +55,13 @@ public final class PositionDao extends DaoTemplate<PositionEntity> {
     public boolean hasData() {
         String query = "SELECT EXISTS (SELECT 1 FROM position)";
         return hasData(query);
+    }
+
+    private PositionEntity mappingResult(ResultSet resultSet) throws SQLException {
+        validateResultSetExist(resultSet);
+        return new PositionEntity(
+                resultSet.getString("lettering"),
+                resultSet.getString("numbering")
+        );
     }
 }

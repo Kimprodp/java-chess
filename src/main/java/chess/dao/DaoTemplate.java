@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public abstract sealed class DaoTemplate<T>
+public abstract sealed class DaoTemplate
         permits ChessGameDao, PiecePositionDao, PieceDao, PositionDao {
 
     private final DBConnector dbConnector = DBConnector.getInstance();
@@ -63,22 +63,6 @@ public abstract sealed class DaoTemplate<T>
     protected ResultSet executeQueryByStatement(Connection connection, String query) throws SQLException {
         Statement statement = connection.createStatement();
         return statement.executeQuery(query);
-    }
-
-
-    protected PreparedStatement getPreparedStatement(String query) throws SQLException {
-        Connection connection = getConnection();
-        return connection.prepareStatement(query);
-    }
-
-    protected PreparedStatement getPreparedStatementContainGeneratedKey(String query) throws SQLException {
-        Connection connection = getConnection();
-        return connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-    }
-
-    protected Statement getStatement() throws SQLException {
-        Connection connection = getConnection();
-        return connection.createStatement();
     }
 
     protected boolean hasResultExist(ResultSet resultSet) throws SQLException {
